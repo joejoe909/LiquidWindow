@@ -195,24 +195,20 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug ()<< " 190 case RESIZETL mode is: " << mode;
                  QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPosition().x())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
                  if((newGeo.x() > 70 && newGeo.width() > 70) && (e->globalPosition().y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
-
-
-
                 return;
                 break;
             }
             case RESIZETR: {    //Right-Top
                  qDebug ()<< " 190 case RESIZETR mode is: " << mode;
-                //QRect newGeo((rectHld.x() - (rectHld.x() - e->x())), (rectHld.y() - (rectHld.y() - e->y())), )
+                QRect newGeo(rectHld.x(), e->globalPos().y(), (rectHld.width() + (e->x()-rectHld.width())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
+                 if((newGeo.x() > 70 && newGeo.width() > 70) && (e->globalPosition().y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
                 return;
                 break;
             }
             case RESIZEBL: {    //Left-Bottom
                  qDebug ()<< " 190 case RESIZEBL";
-//                int newwidth = e->globalX() - position.x() - geometry().x();
-//                QPoint toMove = e->globalPos() - position;
-//                resize(this->geometry().width() - newwidth, e->y());
-//                move(toMove.x(), this->y());
+                 QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), (rectHld.height() + (e->y() - rectHld.height() )));
+                 if((newGeo.x() > 70 && newGeo.width() > 70) && (newGeo.height() > 70)) this->setGeometry(newGeo);
               return;
               break;
             }
@@ -251,7 +247,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             }
             case RESIZEBR: {    //Right-Bottom
                  qDebug ()<< " 190 case RESIZEBR";
-//                resize(e->x(), e->y());
+                  QRect newGeo(rectHld.x(), rectHld.y(), e->x(),  (rectHld.height() + (e->y()-rectHld.height())));
+                 if(newGeo.width() > 90 && newGeo.height() > 70) resize(e->x(), e->y());
                  return;
                  break;
             }
