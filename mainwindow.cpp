@@ -64,6 +64,7 @@ void MainWindow::setCursorShape(const QPoint &e_pos)
             {
                 mode = RESIZEBL;
                 setCursor(QCursor(Qt::SizeBDiagCursor));
+                qDebug() << "cursor shape set to Qt::SizeBDiagCursor";
             }
             //Right-Bottom
             if ((e_pos.y() > y() + height() - diff) &&      //Bottom
@@ -71,6 +72,7 @@ void MainWindow::setCursorShape(const QPoint &e_pos)
             {
                 mode = RESIZEBR;
                 setCursor(QCursor(Qt::SizeFDiagCursor));
+                qDebug() << "cursor shape set to Qt::SizeFDiagCursor";
             }
             //Left-Top
             if ((e_pos.y() < y() + diff) &&                 //Top
@@ -78,6 +80,7 @@ void MainWindow::setCursorShape(const QPoint &e_pos)
             {
                 mode = RESIZETL;
                 setCursor(QCursor(Qt::SizeFDiagCursor));
+                qDebug() << "cursor shape set to Qt::SizeFDiagCursor";
             }
             //Right-Top
             if ((e_pos.y() < y() + diff) &&                 //Top
@@ -85,6 +88,7 @@ void MainWindow::setCursorShape(const QPoint &e_pos)
             {
                 mode = RESIZETR;
                 setCursor(QCursor(Qt::SizeBDiagCursor));
+                qDebug() << "cursor shape set to Qt::SizeBDiagCursor";
             }
         }
         // check cursor horizontal position
@@ -97,6 +101,7 @@ void MainWindow::setCursorShape(const QPoint &e_pos)
             } else {                                        //Right
                 setCursor(QCursor(Qt::SizeHorCursor));
                 mode = RESIZER;
+                qDebug() << "cursor shape set to Qt::SizeHorCursor";
             }
         }
         // check cursor vertical position
@@ -106,13 +111,16 @@ void MainWindow::setCursorShape(const QPoint &e_pos)
             if (e_pos.y() < y() + diff) {                   //Top
                 setCursor(QCursor(Qt::SizeVerCursor));
                 mode = RESIZET;
+                qDebug() << "cursor shape set to Qt::SizeGerCursor";
             } else {                                        //Bottom
                 setCursor(QCursor(Qt::SizeVerCursor));
                 mode = RESIZEB;
+                qDebug() << "cursor shape set to Qt::SizeVerCursor";
             }
         } else {
                 qDebug ()<< " mouse move event line 113";
             setCursor(QCursor(Qt::ArrowCursor));
+             qDebug() << "cursor shape set to Qt::Arrow";
             mode = MOVE;
                 qDebug ()<< " mouse move event line 116";
         }
@@ -162,36 +170,25 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
     qDebug() << "parentWidget() = " << parentWidget();
     qDebug() << "X: " << e->globalPosition().x() << " Y: " << e->globalPosition().y();
     QMainWindow::mouseMoveEvent(e);
-  //  if (!m_isEditing) return;
         if (!m_infocus) return;
             qDebug ()<< " mouse move event line 163  m_infocus is:" << m_infocus << "mode is: " << mode;
         if (!e->buttons() && Qt::LeftButton) {
             QPoint p = QPoint(e->x() + geometry().x(), e->y() + geometry().y());
             setCursorShape(p);
-               qDebug ()<< " mouse move event line 167";
+            qDebug ()<< " mouse move event line 177";
             return;
         }
-    qDebug ()<< " mouse move event line 170";
+    qDebug ()<< " mouse move event line 180";
         if ((mode == MOVE || mode == NONE) && e->buttons() == Qt::LeftButton) {
-//                qDebug ()<< " mouse move event line 174";
-              QPoint toMove = e->globalPos() - position;
-//            if (toMove.x() < 0) return;
-//            if (toMove.y() < 0) return;
-//                qDebug ()<< " mouse move event line 178";
-//            if (toMove.x() > this->width()) return;
-//                qDebug ()<< " mouse move event line 180";
-//            move(toMove);
-//                qDebug ()<< " mouse move event line 181";
-//            this->repaint();
-//                qDebug ()<< " mouse move event line 184";
-//            return;
-
+             qDebug ()<< " mouse move event line 182";
+           QPoint toMove = e->globalPos() - position;
             move(toMove);
 
         }
-        /*f ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
+        if ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
             switch (mode){
             case RESIZETL: {    //Left-Top
+                 qDebug ()<< " 190 case RESIZETL mode is: " << mode;
                 int newwidth = e->globalX() - position.x() - geometry().x();
                 int newheight = e->globalY() - position.y() - geometry().y();
                 QPoint toMove = e->globalPos() - position;
@@ -200,6 +197,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                 break;
             }
             case RESIZETR: {    //Right-Top
+                 qDebug ()<< " 190 case RESIZETR mode is: " << mode;
                 int newheight = e->globalY() - position.y() - geometry().y();
                 QPoint toMove = e->globalPos() - position;
                 resize(e->x(), this->geometry().height() - newheight);
@@ -207,6 +205,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                 break;
             }
             case RESIZEBL: {    //Left-Bottom
+                 qDebug ()<< " 190 case RESIZEBL";
                 int newwidth = e->globalX() - position.x() - geometry().x();
                 QPoint toMove = e->globalPos() - position;
                 resize(this->geometry().width() - newwidth, e->y());
@@ -214,10 +213,12 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                 break;
             }
             case RESIZEB: {     //Bottom
+                 qDebug ()<< " 190 case RESIZEB";
                 resize(width(), e->y());
                 break;
             }
             case RESIZEL: {     //Left
+                 qDebug ()<< " 190 case RESIZEL";
                 int newwidth = e->globalX() - position.x() - geometry().x();
                 QPoint toMove = e->globalPos() - position;
                 resize(this->geometry().width() - newwidth, height());
@@ -225,24 +226,29 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                 break;
             }
             case RESIZET: {     //Top
+                 qDebug ()<< " 190 case RESIZET mode is: " << mode;
                 int newheight = e->globalY() - position.y() - geometry().y();
                 QPoint toMove = e->globalPos() - position;
                 resize(width(), this->geometry().height() - newheight);
                 move(this->x(), toMove.y());
+                qDebug() << "this->x() = " << this->x() << "toMove.y() = " << toMove.y();
+                qDebug ()<< " 223 case RESIZET";
                 break;
             }
             case RESIZER: {     //Right
+                 qDebug ()<< " 190 case RESIZER";
                 resize(e->x(), height());
                 break;
             }
             case RESIZEBR: {    //Right-Bottom
+                 qDebug ()<< " 190 case RESIZEBR";
                 resize(e->x(), e->y());
                 break;
             }
             }
             this->parentWidget()->repaint();
         }
-    qDebug ()<< " mouse move event line 232";*/
+    qDebug ()<< " mouse move event line 232";
 
 }
 
