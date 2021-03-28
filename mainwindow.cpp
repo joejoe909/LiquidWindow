@@ -193,8 +193,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             switch (mode){
             case RESIZETL: {    //Left-Top
                  qDebug ()<< " 190 case RESIZETL mode is: " << mode;
-
-                 //move(e->x(), e->y());
+                 QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPosition().x())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
+                 if((newGeo.x() > 70 && newGeo.width() > 70) && (e->globalPosition().y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
 
 
 
@@ -203,10 +203,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             }
             case RESIZETR: {    //Right-Top
                  qDebug ()<< " 190 case RESIZETR mode is: " << mode;
-//                int newheight = e->globalY() - position.y() - geometry().y();
-//                QPoint toMove = e->globalPos() - position;
-//                resize(e->x(), this->geometry().height() - newheight);
-//                move(this->x(), toMove.y());
+                //QRect newGeo((rectHld.x() - (rectHld.x() - e->x())), (rectHld.y() - (rectHld.y() - e->y())), )
                 return;
                 break;
             }
@@ -222,7 +219,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZEB: {     //Bottom
                  qDebug ()<< " 190 case RESIZEB";
                   QRect newGeo(rectHld.x(), rectHld.y(), rectHld.width(), (rectHld.height() + (e->y()-rectHld.height())));
-                  if(newGeo.height() > 99 ) resize(width(), newGeo.height());
+                  if(newGeo.height() > 70 ) resize(width(), newGeo.height());
 
                return;
                break;
@@ -239,7 +236,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZET: {     //Top
                  qDebug ()<< " 190 case RESIZET mode is: " << mode;
                  QRect newGeo(rectHld.x(), e->globalPos().y(), rectHld.width(), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
-                 if(e->globalPosition().y() >= 28 && newGeo.height() > 99) this->setGeometry(newGeo);
+                 if(e->globalPosition().y() >= 28 && newGeo.height() > 70) this->setGeometry(newGeo);
                return;
                  break;
             }
