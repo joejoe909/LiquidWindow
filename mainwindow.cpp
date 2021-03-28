@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent, QPoint *p) :
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     this->setMouseTracking(true);
     ui->centralwidget->setMouseTracking(true);
+    ui->statusbar->setVisible(false);
     MosPos = new QLabel(this);
     MosPos->setText("uninited");
     MosPos->setGeometry(400,400,100,100);
@@ -38,7 +39,7 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::setCursorShape(const QPointF &e_pos)
+void MainWindow::setCursorShape(const QPoint &e_pos)
 {
     qDebug() << "setCursorShape()";
     const int diff = 8;
@@ -142,7 +143,7 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
              qDebug() << "LeftButton event...";
              emit inFocus(true);
              qDebug() << "focus set to true";
-             setCursorShape(e->globalPosition());
+             setCursorShape(e->globalPos());
             // return;
          }else if(e->button() == Qt::RightButton) {
              qDebug() << "RightButton event...";
@@ -158,6 +159,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
     qDebug() << "mouseMoveEvent()";
+    qDebug() << "parentWidget() = " << parentWidget();
     qDebug() << "X: " << e->globalPosition().x() << " Y: " << e->globalPosition().y();
     QMainWindow::mouseMoveEvent(e);
   //  if (!m_isEditing) return;
@@ -170,21 +172,24 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             return;
         }
     qDebug ()<< " mouse move event line 170";
-        if ((mode == MOVE || mode == NONE) && e->buttons() && Qt::LeftButton) {
-                qDebug ()<< " mouse move event line 174";
-            QPoint toMove = e->pos() - position;
-            if (toMove.x() < 0) return;
-            if (toMove.y() < 0) return;
-                qDebug ()<< " mouse move event line 178";
-            if (toMove.x() > this->parentWidget()->width() - this->width()) return;
-                qDebug ()<< " mouse move event line 180";
+        if ((mode == MOVE || mode == NONE) && e->buttons() == Qt::LeftButton) {
+//                qDebug ()<< " mouse move event line 174";
+              QPoint toMove = e->globalPos() - position;
+//            if (toMove.x() < 0) return;
+//            if (toMove.y() < 0) return;
+//                qDebug ()<< " mouse move event line 178";
+//            if (toMove.x() > this->width()) return;
+//                qDebug ()<< " mouse move event line 180";
+//            move(toMove);
+//                qDebug ()<< " mouse move event line 181";
+//            this->repaint();
+//                qDebug ()<< " mouse move event line 184";
+//            return;
+
             move(toMove);
-                qDebug ()<< " mouse move event line 182";
-            this->parentWidget()->repaint();
-                qDebug ()<< " mouse move event line 184";
-            return;
+
         }
-        if ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
+        /*f ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
             switch (mode){
             case RESIZETL: {    //Left-Top
                 int newwidth = e->globalX() - position.x() - geometry().x();
@@ -237,7 +242,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             }
             this->parentWidget()->repaint();
         }
-    qDebug ()<< " mouse move event line 232";
+    qDebug ()<< " mouse move event line 232";*/
 
 }
 

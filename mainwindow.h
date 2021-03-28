@@ -42,7 +42,7 @@ protected:
 
     QPoint position;
     QVBoxLayout *vLayout;
-    void setCursorShape(const QPointF &e_pos);
+    void setCursorShape(const QPoint &e_pos);
     bool eventFiler(QObject *obj, QEvent *evt);
     void mousePressEvent(QMouseEvent*e);
     void mouseReleaseEvent(QMouseEvent*e);
