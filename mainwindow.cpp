@@ -16,12 +16,12 @@ MainWindow::MainWindow(QWidget *parent, QPoint *p) :
 {
     ui->setupUi(this);
     //this->showMaximized();
-
-    this->setGeometry(200,200,800,800);
+    setWindowFlags(Qt::CustomizeWindowHint);
+    setAttribute(Qt::WA_DeleteOnClose);
+    this->setGeometry(200,200,200,100);
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
-    this->setFocusPolicy(Qt::ClickFocus);
-    this->setFocus();
-    this->move(*p);
+    this->setMouseTracking(true);
+    ui->centralwidget->setMouseTracking(true);
     MosPos = new QLabel(this);
     MosPos->setText("uninited");
     MosPos->setGeometry(400,400,100,100);
@@ -40,6 +40,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::setCursorShape(const QPointF &e_pos)
 {
+    qDebug() << "setCursorShape()";
     const int diff = 8;
         if (
                 //Left-Bottom
@@ -109,53 +110,40 @@ void MainWindow::setCursorShape(const QPointF &e_pos)
                 mode = RESIZEB;
             }
         } else {
+                qDebug ()<< " mouse move event line 113";
             setCursor(QCursor(Qt::ArrowCursor));
             mode = MOVE;
+                qDebug ()<< " mouse move event line 116";
         }
 
 }
 
 bool MainWindow::eventFiler(QObject *obj, QEvent *evt)
 {
-    if(m_infocus){
-        //this is a good place to pain if you need to
-        return QMainWindow::eventFilter(obj,evt);
-    }
+//    if(m_infocus){
+//        //this is a good place to pain if you need to
+
+//        return QMainWindow::eventFilter(obj,evt);
+//    }
+    qDebug() << "eventFilter";
     return QMainWindow::eventFilter(obj, evt);
-}
-
-
-void MainWindow::keyPressEvent(QKeyEvent *)
-{
 
 }
 
-void MainWindow::focusInEvent(QFocusEvent *e)
-{
-    m_infocus = true;
-    this->installEventFilter(this);
-    this->repaint();
-    emit inFocus(true);
-}
 
-void MainWindow::focusOutEvent(QFocusEvent *e)
-{
-    if(!m_isEditing) return;
-    mode = NONE;
-    emit outFocus(false);
-    m_infocus = false
-;
-}
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
+    qDebug() << "mosuePressEvent()";
      position = QPoint(e->globalPosition().x()-geometry().x(), e->globalPosition().y()-geometry().y());
-     if (!m_isEditing) return;
-         if (!m_infocus) return;
+     //if (!m_isEditing) return;
+        // if (!m_infocus) return;
          if (e->buttons() == Qt::LeftButton) {
              qDebug() << "LeftButton event...";
+             emit inFocus(true);
+             qDebug() << "focus set to true";
              setCursorShape(e->globalPosition());
-             return;
+            // return;
          }else if(e->button() == Qt::RightButton) {
              qDebug() << "RightButton event...";
              e->accept();
@@ -169,6 +157,101 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
+    qDebug() << "mouseMoveEvent()";
     qDebug() << "X: " << e->globalPosition().x() << " Y: " << e->globalPosition().y();
+    QMainWindow::mouseMoveEvent(e);
+  //  if (!m_isEditing) return;
+        if (!m_infocus) return;
+            qDebug ()<< " mouse move event line 163  m_infocus is:" << m_infocus << "mode is: " << mode;
+        if (!e->buttons() && Qt::LeftButton) {
+            QPoint p = QPoint(e->x() + geometry().x(), e->y() + geometry().y());
+            setCursorShape(p);
+               qDebug ()<< " mouse move event line 167";
+            return;
+        }
+    qDebug ()<< " mouse move event line 170";
+        if ((mode == MOVE || mode == NONE) && e->buttons() && Qt::LeftButton) {
+                qDebug ()<< " mouse move event line 174";
+            QPoint toMove = e->pos() - position;
+            if (toMove.x() < 0) return;
+            if (toMove.y() < 0) return;
+                qDebug ()<< " mouse move event line 178";
+            if (toMove.x() > this->parentWidget()->width() - this->width()) return;
+                qDebug ()<< " mouse move event line 180";
+            move(toMove);
+                qDebug ()<< " mouse move event line 182";
+            this->parentWidget()->repaint();
+                qDebug ()<< " mouse move event line 184";
+            return;
+        }
+        if ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
+            switch (mode){
+            case RESIZETL: {    //Left-Top
+                int newwidth = e->globalX() - position.x() - geometry().x();
+                int newheight = e->globalY() - position.y() - geometry().y();
+                QPoint toMove = e->globalPos() - position;
+                resize(this->geometry().width() - newwidth, this->geometry().height() - newheight);
+                move(toMove.x(), toMove.y());
+                break;
+            }
+            case RESIZETR: {    //Right-Top
+                int newheight = e->globalY() - position.y() - geometry().y();
+                QPoint toMove = e->globalPos() - position;
+                resize(e->x(), this->geometry().height() - newheight);
+                move(this->x(), toMove.y());
+                break;
+            }
+            case RESIZEBL: {    //Left-Bottom
+                int newwidth = e->globalX() - position.x() - geometry().x();
+                QPoint toMove = e->globalPos() - position;
+                resize(this->geometry().width() - newwidth, e->y());
+                move(toMove.x(), this->y());
+                break;
+            }
+            case RESIZEB: {     //Bottom
+                resize(width(), e->y());
+                break;
+            }
+            case RESIZEL: {     //Left
+                int newwidth = e->globalX() - position.x() - geometry().x();
+                QPoint toMove = e->globalPos() - position;
+                resize(this->geometry().width() - newwidth, height());
+                move(toMove.x(), this->y());
+                break;
+            }
+            case RESIZET: {     //Top
+                int newheight = e->globalY() - position.y() - geometry().y();
+                QPoint toMove = e->globalPos() - position;
+                resize(width(), this->geometry().height() - newheight);
+                move(this->x(), toMove.y());
+                break;
+            }
+            case RESIZER: {     //Right
+                resize(e->x(), height());
+                break;
+            }
+            case RESIZEBR: {    //Right-Bottom
+                resize(e->x(), e->y());
+                break;
+            }
+            }
+            this->parentWidget()->repaint();
+        }
+    qDebug ()<< " mouse move event line 232";
+
+}
+
+void MainWindow::moveEvent(QMoveEvent *e)
+{
+    qDebug () << "mouse moveEvent";
+    qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
+
+
+}
+
+void MainWindow::enterEvent(QEnterEvent *e)
+{
+    qDebug() << "enter event";
+     qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
 
 }

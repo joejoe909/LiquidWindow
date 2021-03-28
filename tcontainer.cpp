@@ -208,7 +208,7 @@ void TContainer::mouseMoveEvent(QMouseEvent *e) {
     if (!m_isEditing) return;
     if (!m_infocus) return;
     if (!e->buttons() && Qt::LeftButton) {
-        QPoint p = QPoint(e->x() + geometry().x(), e->y() + geometry().y());
+        QPoint p = QPoint(e->position().x(), e->position().y());
         setCursorShape(p);
         return;
     }

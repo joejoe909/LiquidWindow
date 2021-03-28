@@ -44,12 +44,12 @@ protected:
     QVBoxLayout *vLayout;
     void setCursorShape(const QPointF &e_pos);
     bool eventFiler(QObject *obj, QEvent *evt);
-    void keyPressEvent(QKeyEvent*e);
-    void focusInEvent(QFocusEvent*e);
-    void focusOutEvent(QFocusEvent*e);
     void mousePressEvent(QMouseEvent*e);
     void mouseReleaseEvent(QMouseEvent*e);
     void mouseMoveEvent(QMouseEvent*e);
+    void moveEvent(QMoveEvent *e);
+    void enterEvent(QEnterEvent *e);
+
     bool m_infocus;
     bool m_isEditing;
 
@@ -60,6 +60,11 @@ signals:
 private:
     Ui::MainWindow *ui;
     QLabel *MosPos;
+
+
+    // QWidget interface
+protected:
+
 };
 
 #endif // MAINWINDOW_H
