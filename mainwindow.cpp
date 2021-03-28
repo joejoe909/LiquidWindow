@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent, QPoint *p) :
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     this->setMouseTracking(true);
     ui->centralwidget->setMouseTracking(true);
+    ui->centralwidget->setStyleSheet("background-color: 'orange';");
     ui->statusbar->setVisible(false);
     MosPos = new QLabel(this);
     MosPos->setText("uninited");
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent, QPoint *p) :
     m_isEditing = true;
     this->installEventFilter(parent);
 
-
+   qDebug () << position;
 
 }
 
@@ -148,6 +149,7 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
      //if (!m_isEditing) return;
         // if (!m_infocus) return;
          if (e->buttons() == Qt::LeftButton) {
+             //if
              qDebug() << "LeftButton event...";
              emit inFocus(true);
              qDebug() << "focus set to true";
@@ -166,7 +168,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
-    qDebug() << "mouseMoveEvent()";
+    QRect rectHld = this->geometry();
+    qDebug() << "mouseMoveEvent() position is: " << position;
     qDebug() << "parentWidget() = " << parentWidget();
     qDebug() << "X: " << e->globalPosition().x() << " Y: " << e->globalPosition().y();
     QMainWindow::mouseMoveEvent(e);
@@ -185,70 +188,80 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             move(toMove);
 
         }
-        if ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
+       if ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
+           qDebug() << "now in if statement at 190";
             switch (mode){
             case RESIZETL: {    //Left-Top
                  qDebug ()<< " 190 case RESIZETL mode is: " << mode;
-                int newwidth = e->globalX() - position.x() - geometry().x();
-                int newheight = e->globalY() - position.y() - geometry().y();
-                QPoint toMove = e->globalPos() - position;
-                resize(this->geometry().width() - newwidth, this->geometry().height() - newheight);
-                move(toMove.x(), toMove.y());
+
+                 //move(e->x(), e->y());
+
+
+
+                return;
                 break;
             }
             case RESIZETR: {    //Right-Top
                  qDebug ()<< " 190 case RESIZETR mode is: " << mode;
-                int newheight = e->globalY() - position.y() - geometry().y();
-                QPoint toMove = e->globalPos() - position;
-                resize(e->x(), this->geometry().height() - newheight);
-                move(this->x(), toMove.y());
+//                int newheight = e->globalY() - position.y() - geometry().y();
+//                QPoint toMove = e->globalPos() - position;
+//                resize(e->x(), this->geometry().height() - newheight);
+//                move(this->x(), toMove.y());
+                return;
                 break;
             }
             case RESIZEBL: {    //Left-Bottom
                  qDebug ()<< " 190 case RESIZEBL";
-                int newwidth = e->globalX() - position.x() - geometry().x();
-                QPoint toMove = e->globalPos() - position;
-                resize(this->geometry().width() - newwidth, e->y());
-                move(toMove.x(), this->y());
-                break;
+//                int newwidth = e->globalX() - position.x() - geometry().x();
+//                QPoint toMove = e->globalPos() - position;
+//                resize(this->geometry().width() - newwidth, e->y());
+//                move(toMove.x(), this->y());
+              return;
+              break;
             }
             case RESIZEB: {     //Bottom
                  qDebug ()<< " 190 case RESIZEB";
-                resize(width(), e->y());
-                break;
+                  QRect newGeo(rectHld.x(), rectHld.y(), rectHld.width(), (rectHld.height() + (e->y()-rectHld.height())));
+                  if(newGeo.height() > 99 ) resize(width(), newGeo.height());
+
+               return;
+               break;
             }
             case RESIZEL: {     //Left
                  qDebug ()<< " 190 case RESIZEL";
-                int newwidth = e->globalX() - position.x() - geometry().x();
-                QPoint toMove = e->globalPos() - position;
-                resize(this->geometry().width() - newwidth, height());
-                move(toMove.x(), this->y());
-                break;
+                 QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), rectHld.height());
+                 qDebug() << "rectHld = " << rectHld;
+                 qDebug() << "newGeo = " << newGeo;
+                 if(newGeo.x() > 70 && newGeo.width() > 70) this->setGeometry(newGeo);
+                 return;
+                 break;
             }
             case RESIZET: {     //Top
                  qDebug ()<< " 190 case RESIZET mode is: " << mode;
-                int newheight = e->globalY() - position.y() - geometry().y();
-                QPoint toMove = e->globalPos() - position;
-                resize(width(), this->geometry().height() - newheight);
-                move(this->x(), toMove.y());
-                qDebug() << "this->x() = " << this->x() << "toMove.y() = " << toMove.y();
-                qDebug ()<< " 223 case RESIZET";
-                break;
+                 QRect newGeo(rectHld.x(), e->globalPos().y(), rectHld.width(), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
+                 if(e->globalPosition().y() >= 28 && newGeo.height() > 99) this->setGeometry(newGeo);
+               return;
+                 break;
             }
             case RESIZER: {     //Right
                  qDebug ()<< " 190 case RESIZER";
-                resize(e->x(), height());
+                 QRect newGeo(rectHld.x(), rectHld.y(), e->x(), rectHld.height());
+                 qDebug() << "rectHld = " << rectHld;
+                 qDebug() << "newGeo = " << newGeo;
+                 if(newGeo.x() > 70 && newGeo.width() > 70) this->setGeometry(newGeo);
+                return;
                 break;
             }
             case RESIZEBR: {    //Right-Bottom
                  qDebug ()<< " 190 case RESIZEBR";
-                resize(e->x(), e->y());
-                break;
+//                resize(e->x(), e->y());
+                 return;
+                 break;
             }
             }
             this->parentWidget()->repaint();
-        }
-    qDebug ()<< " mouse move event line 232";
+    }
+//    qDebug ()<< " mouse move event line 232";
 
 }
 
