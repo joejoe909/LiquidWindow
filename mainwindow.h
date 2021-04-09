@@ -60,6 +60,10 @@ signals:
 private:
     Ui::MainWindow *ui;
     QLabel *MosPos;
+    QList<QScreen*> screens;
+    int numOfScreens;
+    QRect useableGeo;
+    QScreen *currentScreen;
 
 
     // QWidget interface

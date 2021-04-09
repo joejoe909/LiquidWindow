@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QString>
+#include <QScreen>
 
 MainWindow::MainWindow(QWidget *parent, QPoint *p) :
     QMainWindow(parent),
@@ -24,9 +25,12 @@ MainWindow::MainWindow(QWidget *parent, QPoint *p) :
     ui->centralwidget->setMouseTracking(true);
     ui->centralwidget->setStyleSheet("background-color: 'orange';");
     ui->statusbar->setVisible(false);
-    MosPos = new QLabel(this);
-    MosPos->setText("uninited");
-    MosPos->setGeometry(400,400,100,100);
+
+    screens = QGuiApplication::screens();
+    numOfScreens = screens.size();
+
+    currentScreen = QGuiApplication::screenAt(geometry().center());
+    qDebug() << "On screen: " << currentScreen->availableGeometry();
 
     m_infocus = true;
     m_isEditing = true;
@@ -42,7 +46,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::setCursorShape(const QPoint &e_pos)
 {
-    qDebug() << "setCursorShape()";
+
     const int diff = 8;
         if (
                 //Left-Bottom
@@ -119,11 +123,11 @@ void MainWindow::setCursorShape(const QPoint &e_pos)
                 qDebug() << "cursor shape set to Qt::SizeVerCursor";
             }
         } else {
-                qDebug ()<< " mouse move event line 113";
+
             setCursor(QCursor(Qt::ArrowCursor));
-             qDebug() << "cursor shape set to Qt::Arrow";
+
             mode = MOVE;
-                qDebug ()<< " mouse move event line 116";
+
         }
 
 }
@@ -164,26 +168,31 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     QMainWindow::mouseReleaseEvent(e);
+    currentScreen = QGuiApplication::screenAt(geometry().center());
+    qDebug() << "mosueReleaseEvent - On screen: " << currentScreen->availableGeometry();
+    repaint();
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
     QRect rectHld = this->geometry();
-    qDebug() << "mouseMoveEvent() position is: " << position;
-    qDebug() << "parentWidget() = " << parentWidget();
-    qDebug() << "X: " << e->globalPosition().x() << " Y: " << e->globalPosition().y();
+//    qDebug() << "mouseMoveEvent() position is: " << position;
+//    qDebug() << "parentWidget() = " << parentWidget();
+//    qDebug() << "X: " << e->globalPosition().x() << " Y: " << e->globalPosition().y();
     QMainWindow::mouseMoveEvent(e);
         if (!m_infocus) return;
-            qDebug ()<< " mouse move event line 163  m_infocus is:" << m_infocus << "mode is: " << mode;
+           // qDebug ()<< " mouse move event line 163  m_infocus is:" << m_infocus << "mode is: " << mode;
         if (!e->buttons() && Qt::LeftButton) {
             QPoint p = QPoint(e->x() + geometry().x(), e->y() + geometry().y());
             setCursorShape(p);
-            qDebug ()<< " mouse move event line 177";
+            //qDebug ()<< " mouse move event line 177";
             return;
         }
     qDebug ()<< " mouse move event line 180";
         if ((mode == MOVE || mode == NONE) && e->buttons() == Qt::LeftButton) {
              qDebug ()<< " mouse move event line 182";
+             currentScreen = QGuiApplication::screenAt(geometry().center());
+             qDebug() << "On screen: " << currentScreen->availableGeometry();
            QPoint toMove = e->globalPos() - position;
             move(toMove);
 
@@ -194,21 +203,24 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZETL: {    //Left-Top
                  qDebug ()<< " 190 case RESIZETL mode is: " << mode;
                  QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPosition().x())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
-                 if((newGeo.x() > 70 && newGeo.width() > 70) && (e->globalPosition().y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
-                return;
-                break;
+                 currentScreen = QGuiApplication::screenAt(geometry().center());
+                 if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
+                 return;
+                 break;
             }
             case RESIZETR: {    //Right-Top
                  qDebug ()<< " 190 case RESIZETR mode is: " << mode;
-                QRect newGeo(rectHld.x(), e->globalPos().y(), (rectHld.width() + (e->x()-rectHld.width())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
-                 if((newGeo.x() > 70 && newGeo.width() > 70) && (e->globalPosition().y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
-                return;
-                break;
+                 QRect newGeo(rectHld.x(), e->globalPos().y(), (rectHld.width() + (e->x()-rectHld.width())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
+                 currentScreen = QGuiApplication::screenAt(geometry().center());
+                 if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
+                 return;
+                 break;
             }
             case RESIZEBL: {    //Left-Bottom
                  qDebug ()<< " 190 case RESIZEBL";
+                 currentScreen = QGuiApplication::screenAt(geometry().center());
                  QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), (rectHld.height() + (e->y() - rectHld.height() )));
-                 if((newGeo.x() > 70 && newGeo.width() > 70) && (newGeo.height() > 70)) this->setGeometry(newGeo);
+                 if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.height() > 70)) this->setGeometry(newGeo);
               return;
               break;
             }
@@ -223,26 +235,37 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZEL: {     //Left
                  qDebug ()<< " 190 case RESIZEL";
                  QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), rectHld.height());
-                 qDebug() << "rectHld = " << rectHld;
-                 qDebug() << "newGeo = " << newGeo;
-                 if(newGeo.x() > 70 && newGeo.width() > 70) this->setGeometry(newGeo);
+//                 qDebug() << "rectHld = " << rectHld;
+//                 qDebug() << "newGeo = " << newGeo;
+                 currentScreen = QGuiApplication::screenAt(geometry().center());
+//                 qDebug() << "On screen: " << currentScreen->availableGeometry();
+//                 qDebug() << "newGeo.x(): " << newGeo.x() << " newGeo.width()" << newGeo.width();
+                 if(newGeo.x() > currentScreen->availableGeometry().x() + 70 &&
+                         newGeo.width() > 70) this->setGeometry(newGeo);
                  return;
                  break;
             }
             case RESIZET: {     //Top
                  qDebug ()<< " 190 case RESIZET mode is: " << mode;
                  QRect newGeo(rectHld.x(), e->globalPos().y(), rectHld.width(), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
-                 if(e->globalPosition().y() >= 28 && newGeo.height() > 70) this->setGeometry(newGeo);
-               return;
+                //if(e->globalPosition().y() >= 28 && newGeo.height() > 70) this->setGeometry(newGeo);
+                 currentScreen = QGuiApplication::screenAt(geometry().center());
+                 qDebug() << "On screen: " << currentScreen->availableGeometry();
+                 //if(e->globalPosition().y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > currentScreen->availableGeometry().height() + 70) this->setGeometry(newGeo);
+                  if(newGeo.y() >= 28 && newGeo.height() > 70) this->setGeometry(newGeo);
+
+                 return;
                  break;
             }
             case RESIZER: {     //Right
                  qDebug ()<< " 190 case RESIZER";
+                 currentScreen = QGuiApplication::screenAt(geometry().center());
                  QRect newGeo(rectHld.x(), rectHld.y(), e->x(), rectHld.height());
                  qDebug() << "rectHld = " << rectHld;
                  qDebug() << "newGeo = " << newGeo;
-                 if(newGeo.x() > 70 && newGeo.width() > 70) this->setGeometry(newGeo);
-                return;
+                 //if(newGeo.x() > 70 && newGeo.width() > 70) this->setGeometry(newGeo);
+                 if(newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) this->setGeometry(newGeo);
+                 return;
                 break;
             }
             case RESIZEBR: {    //Right-Bottom
@@ -261,8 +284,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 
 void MainWindow::moveEvent(QMoveEvent *e)
 {
-    qDebug () << "mouse moveEvent";
-    qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
+   // qDebug () << "mouse moveEvent";
+   // qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
 
 
 }
