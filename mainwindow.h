@@ -12,6 +12,7 @@
 #include <QMouseEvent>
 #include <QLabel>
 
+
 enum modes{
    NONE = 0,
    MOVE = 1,
@@ -27,8 +28,13 @@ enum modes{
 
 namespace Ui {
 class MainWindow;
-
 }
+
+QT_BEGIN_NAMESPACE
+class QAction;
+class QActionGroup;
+class QMenu;
+QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
@@ -49,6 +55,9 @@ protected:
     void mouseMoveEvent(QMouseEvent*e);
     void moveEvent(QMoveEvent *e);
     void enterEvent(QEnterEvent *e);
+    void redrawComponents();
+    QWidget *titlebar;
+
 
     bool m_infocus;
     bool m_isEditing;
@@ -64,6 +73,20 @@ private:
     int numOfScreens;
     QRect useableGeo;
     QScreen *currentScreen;
+
+    void createActions();
+    void createMenus();
+
+    QMenu *testMenu1;
+    QMenu *testMenu2;
+    QMenu *testMenu3;
+
+    QAction *testAction1;
+    QAction *testAction2;
+    QAction *testAction3;
+
+
+
 
 
     // QWidget interface

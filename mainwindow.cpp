@@ -10,6 +10,11 @@
 #include <QDebug>
 #include <QString>
 #include <QScreen>
+#include <QMenu>
+#include <QAction>
+#include <QVBoxLayout>
+
+
 
 MainWindow::MainWindow(QWidget *parent, QPoint *p) :
     QMainWindow(parent),
@@ -25,6 +30,19 @@ MainWindow::MainWindow(QWidget *parent, QPoint *p) :
     ui->centralwidget->setMouseTracking(true);
     ui->centralwidget->setStyleSheet("background-color: 'orange';");
     ui->statusbar->setVisible(false);
+//    QVBoxLayout *vertLay = new QVBoxLayout(this);
+
+    titlebar = new QWidget(this);
+    titlebar->setStyleSheet("background-color: 'green';");
+    titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+    QWidget *mainarea = new QWidget(this);
+    mainarea->setStyleSheet("background-color: 'red'");
+
+
+  //  vertLay->addWidget(titlebar);
+
+   // ui->centralwidget->setLayout(vertLay);
+
 
     screens = QGuiApplication::screens();
     numOfScreens = screens.size();
@@ -35,8 +53,11 @@ MainWindow::MainWindow(QWidget *parent, QPoint *p) :
     m_infocus = true;
     m_isEditing = true;
     this->installEventFilter(parent);
+//    createActions();
+//    createMenus();
 
    qDebug () << position;
+
 
 }
 
@@ -205,6 +226,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPosition().x())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
+                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
                  return;
                  break;
             }
@@ -213,6 +235,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  QRect newGeo(rectHld.x(), e->globalPos().y(), (rectHld.width() + (e->x()-rectHld.width())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
+                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
                  return;
                  break;
             }
@@ -221,16 +244,17 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), (rectHld.height() + (e->y() - rectHld.height() )));
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.height() > 70)) this->setGeometry(newGeo);
-              return;
-              break;
+                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                 return;
+                 break;
             }
             case RESIZEB: {     //Bottom
                  qDebug ()<< " 190 case RESIZEB";
                   QRect newGeo(rectHld.x(), rectHld.y(), rectHld.width(), (rectHld.height() + (e->y()-rectHld.height())));
                   if(newGeo.height() > 70 ) resize(width(), newGeo.height());
-
-               return;
-               break;
+                  titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                  return;
+                  break;
             }
             case RESIZEL: {     //Left
                  qDebug ()<< " 190 case RESIZEL";
@@ -242,6 +266,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 //                 qDebug() << "newGeo.x(): " << newGeo.x() << " newGeo.width()" << newGeo.width();
                  if(newGeo.x() > currentScreen->availableGeometry().x() + 70 &&
                          newGeo.width() > 70) this->setGeometry(newGeo);
+                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
                  return;
                  break;
             }
@@ -253,7 +278,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug() << "On screen: " << currentScreen->availableGeometry();
                  //if(e->globalPosition().y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > currentScreen->availableGeometry().height() + 70) this->setGeometry(newGeo);
                   if(newGeo.y() >= 28 && newGeo.height() > 70) this->setGeometry(newGeo);
-
+                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
                  return;
                  break;
             }
@@ -265,6 +290,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug() << "newGeo = " << newGeo;
                  //if(newGeo.x() > 70 && newGeo.width() > 70) this->setGeometry(newGeo);
                  if(newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) this->setGeometry(newGeo);
+                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
                  return;
                 break;
             }
@@ -272,6 +298,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug ()<< " 190 case RESIZEBR";
                   QRect newGeo(rectHld.x(), rectHld.y(), e->x(),  (rectHld.height() + (e->y()-rectHld.height())));
                  if(newGeo.width() > 90 && newGeo.height() > 70) resize(e->x(), e->y());
+                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
                  return;
                  break;
             }
@@ -295,4 +322,23 @@ void MainWindow::enterEvent(QEnterEvent *e)
     qDebug() << "enter event";
      qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
 
+}
+
+void MainWindow::redrawComponents()
+{
+
+}
+
+
+void MainWindow::createActions()
+{
+    testAction1 = new QAction("Test Action 1", this);
+    testAction2 = new QAction("Test Action 2",this);
+    testAction3 = new QAction("Test Action 3",this);
+}
+
+void MainWindow::createMenus()
+{
+      testMenu1 = menuBar()->addMenu(tr("Test Menu 1"));
+    testMenu1->addAction(testAction1);
 }
