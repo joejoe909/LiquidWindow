@@ -34,9 +34,9 @@ MainWindow::MainWindow(QWidget *parent, QPoint *p) :
 
     titlebar = new QWidget(this);
     titlebar->setStyleSheet("background-color: 'green';");
-    titlebar->setGeometry(0, 0, this->geometry().width(), 50);
-    QWidget *mainarea = new QWidget(this);
-    mainarea->setStyleSheet("background-color: 'red'");
+    titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
+//    QWidget *mainarea = new QWidget(this);
+//    mainarea->setStyleSheet("background-color: 'red'");
 
 
   //  vertLay->addWidget(titlebar);
@@ -226,7 +226,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPosition().x())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
-                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
@@ -235,7 +235,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  QRect newGeo(rectHld.x(), e->globalPos().y(), (rectHld.width() + (e->x()-rectHld.width())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
-                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
@@ -244,7 +244,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), (rectHld.height() + (e->y() - rectHld.height() )));
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.height() > 70)) this->setGeometry(newGeo);
-                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
@@ -252,7 +252,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug ()<< " 190 case RESIZEB";
                   QRect newGeo(rectHld.x(), rectHld.y(), rectHld.width(), (rectHld.height() + (e->y()-rectHld.height())));
                   if(newGeo.height() > 70 ) resize(width(), newGeo.height());
-                  titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                  titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                   return;
                   break;
             }
@@ -266,7 +266,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 //                 qDebug() << "newGeo.x(): " << newGeo.x() << " newGeo.width()" << newGeo.width();
                  if(newGeo.x() > currentScreen->availableGeometry().x() + 70 &&
                          newGeo.width() > 70) this->setGeometry(newGeo);
-                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
@@ -278,7 +278,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug() << "On screen: " << currentScreen->availableGeometry();
                  //if(e->globalPosition().y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > currentScreen->availableGeometry().height() + 70) this->setGeometry(newGeo);
                   if(newGeo.y() >= 28 && newGeo.height() > 70) this->setGeometry(newGeo);
-                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
@@ -290,7 +290,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug() << "newGeo = " << newGeo;
                  //if(newGeo.x() > 70 && newGeo.width() > 70) this->setGeometry(newGeo);
                  if(newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) this->setGeometry(newGeo);
-                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                 break;
             }
@@ -298,7 +298,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug ()<< " 190 case RESIZEBR";
                   QRect newGeo(rectHld.x(), rectHld.y(), e->x(),  (rectHld.height() + (e->y()-rectHld.height())));
                  if(newGeo.width() > 90 && newGeo.height() > 70) resize(e->x(), e->y());
-                 titlebar->setGeometry(0, 0, this->geometry().width(), 50);
+                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
