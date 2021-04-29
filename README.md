@@ -9,9 +9,15 @@
 ### Feel free to Fork, create Pull requests and improve this code.
 
 # To Do List: 
+### Take code out of MainWindow and create a custom LiquidWindow class.
 ### Add a seperate class for the Title Bar
 ### Add buttons to control Min/Max/Restore/Close
 ### Add functionality that will allow customization via QSS/CSS.
 ### Add functions that will allow customization via C++ function calls.
+
+## Credits:
+
+Aleksey Osipov
+Joe Farrish
 
 
