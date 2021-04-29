@@ -6,6 +6,8 @@
 
 <img src = "ss.png"/>
 
+<h3> In its current state you can drage for movement and resize the window. </h3>
+
 <br>
 
 <h3 style = "color: green" > Liquid Window has code to allow for multiple monitor support. </h3> 
