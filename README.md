@@ -14,6 +14,7 @@
 ### Add buttons to control Min/Max/Restore/Close
 ### Add functionality that will allow customization via QSS/CSS.
 ### Add functions that will allow customization via C++ function calls.
+### Design a Cool Logo.
 
 ## Credits:
 
