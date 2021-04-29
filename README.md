@@ -4,6 +4,8 @@
 
 <h3> Liquid window is what is refered to as a Custom Frameless Window in Qt. This allows the coders to customize the look and feel of the window which you can do normally in QMainWindow class however the one draw back is QMainWindow doesnt allow you to display a custom Title bar as that is managed by windows. Using a customer Frameless window you re-write the code to allow for resizeing, drag, colors, etc.   </h3>
 
+<br>
+
 <img src = "ss.png"/>
 
 <h3> In its current state you can drage for movement and resize the window. </h3>
