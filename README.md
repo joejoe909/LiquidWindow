@@ -4,7 +4,7 @@
 
 ### Liquid Window has code to allow for multiple monitor support. 
 
-### Liquid Window is based on the resizeable Widget code found at https://wiki.qt.io/Widget-moveable-and-resizeable but has been adapted for use as a upper level, parentless Widget. If you need a resizeable Widget this is wher eyou want to go!
+### Liquid Window is based on the resizeable Widget code found at https://wiki.qt.io/Widget-moveable-and-resizeable but has been adapted for use as a upper level, parentless Widget. If you need a resizeable Widget this is wher you want to go! This File called the tcontiner is included in this repo for your refrence.
 
 ### Feel free to Fork, create Pull requests and improve this code.
 
