@@ -16,7 +16,7 @@
 
 <br>
 
-<h3> Liquid Window is based on the resizeable Widget code found at https://wiki.qt.io/Widget-moveable-and-resizeable but has been adapted for use as a upper level, parentless Widget. If you need a resizeable Widget this is wher you want to go! This File called the tcontiner is included in this repo for your refrence.
+<h3> Liquid Window is based on the resizeable widget code found at https://wiki.qt.io/Widget-moveable-and-resizeable but has been adapted for use as a upper level, parentless Widget. If you need a resizeable Widget this is wher you want to go! This class/.h,.cpp file is called tcontiner is included in this repo for your refrence.
 </h3>
 
 <br>
@@ -25,12 +25,12 @@
 
 <br>
 
-<h3> If your delving in QML or doing anything with Qt at somepoint you will want to customize the look of you application window. This will alow speedier learning and development and ultimately customization of your applciation.
+<h3> If your delving in QML or doing anything with Qt at somepoint you will want to customize the look of you application window. This will alow speedier learning and development and ultimately more customization of your applciation.
 </h3>
 
 <br>
 
-<h2 style = "color: red" > Feel free to fork, create pull requests and improve this code. Feel free to use it in your projects.
+<h2 style = "color: red" > Feel free to fork, create pull requests and improve on this code. Feel free to use it in your projects.
 
 <br>
 
