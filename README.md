@@ -12,7 +12,7 @@
 
 <br>
 
-<h3 style = "color: green" > Liquid Window has code to allow for multiple monitor support. </h3> 
+<h3 style = "color: green" > Liquid Window supports multiple monitors. </h3> 
 
 <br>
 
