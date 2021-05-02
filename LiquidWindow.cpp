@@ -22,22 +22,27 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         this->setGeometry(200,200,200,100);
         this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
         this->setMouseTracking(true);
+
         ui->centralwidget->setMouseTracking(true);
         ui->centralwidget->setStyleSheet("background-color: 'orange';");
-        ui->statusbar->setVisible(false);
-    //    QVBoxLayout *vertLay = new QVBoxLayout(this);
+        ui->centralwidget->setContentsMargins(1,1,-1,-1);
+        QVBoxLayout *vertLay = new QVBoxLayout(this);
+        ui->centralwidget->setLayout(vertLay);
 
-        titlebar = new QWidget(this);
-        titlebar->setStyleSheet("background-color: 'green';");
+
+
+        titlebar = new TitleBar(this);
         titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
-    //    QWidget *mainarea = new QWidget(this);
-    //    mainarea->setStyleSheet("background-color: 'red'");
+        titlebar->setMaximumHeight(50);
+     //   titlebar->setGeometry(10,10,50,50);
+      //  titlebar->setVisible(true);
 
 
-      //  vertLay->addWidget(titlebar);
+        vertLay->addWidget(titlebar);
 
-       // ui->centralwidget->setLayout(vertLay);
-
+        QWidget *mainarea = new QWidget(this);
+        mainarea->setStyleSheet("background: 'blue'");
+        vertLay->addWidget(mainarea);
 
         screens = QGuiApplication::screens();
         numOfScreens = screens.size();
@@ -48,10 +53,7 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         m_infocus = true;
         m_isEditing = true;
         this->installEventFilter(parent);
-    //    createActions();
-    //    createMenus();
-
-       qDebug () << position;
+        qDebug () << position;
 }
 
 LiquidWindow::~LiquidWindow()
