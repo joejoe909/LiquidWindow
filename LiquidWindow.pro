@@ -10,18 +10,13 @@ CONFIG += c++11
 
 SOURCES += \
     LiquidWindow.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    tcontainer.cpp
+    main.cpp
 
 HEADERS += \
-    LiquidWindow.h \
-    mainwindow.h \
-    tcontainer.h
+    LiquidWindow.h
 
 FORMS += \
-    LiquidWindow.ui \
-    mainwindow.ui
+    LiquidWindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

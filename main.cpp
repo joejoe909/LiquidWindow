@@ -1,4 +1,3 @@
-#include "mainwindow.h"
 #include "LiquidWindow.h"
 
 #include <QApplication>
