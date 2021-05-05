@@ -19,33 +19,26 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         //this->showMaximized();
         setWindowFlags(Qt::CustomizeWindowHint);
         setAttribute(Qt::WA_DeleteOnClose);
-        this->setGeometry(200,200,700,500);
         this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
         this->setMouseTracking(true);
-
+        this->setGeometry(200,200,700,500);
         ui->centralwidget->setMouseTracking(true);
         ui->centralwidget->setStyleSheet("background-color: 'orange';");
-        //ui->centralwidget->setContentsMargins(1,1,1,1);
         QVBoxLayout *vertLay = new QVBoxLayout(this);
         vertLay->setSpacing(0);
         ui->centralwidget->setLayout(vertLay);
 
-
-
         titlebar = new TitleBar(this);
-        //titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+5, this->contentsRect().width()-2, 50);
-        titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
+
+
         titlebar->setMaximumHeight(50);
         titlebar->setMouseTracking(true);
-
-     //   titlebar->setGeometry(10,10,50,50);
-      //  titlebar->setVisible(true);
-
-
+        titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
         vertLay->addWidget(titlebar);
 
         QFrame *mainarea = new QFrame(this);
         mainarea->setStyleSheet("background: 'blue'");
+        mainarea->setContentsMargins(0,0,0,0);
         vertLay->addWidget(mainarea);
 
         screens = QGuiApplication::screens();
@@ -58,6 +51,7 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         m_isEditing = true;
         this->installEventFilter(parent);
         qDebug () << position;
+
 
 
 }

@@ -11,7 +11,7 @@ TitleBar::TitleBar(QWidget *parent): QWidget(parent)
     this->setLayout(hLayout);
     this->setStyleSheet("background-color: 'green';");
     //this->setGeometry(parent->x(), parent->y(), parent->height(), parent->width());
-    hLayout->setContentsMargins(5,5,5,5);
+    //hLayout->setContentsMargins(5,5,5,5);
     hLayout->setSpacing(0);
 //    QLabel *newLbl = new QLabel(this);
 //    newLbl->setText("This is a test");
@@ -19,7 +19,7 @@ TitleBar::TitleBar(QWidget *parent): QWidget(parent)
 //    newLbl->setContentsMargins(5,5,-5,-5);
 
     titlebar = new QFrame(this);
-    titlebar->setContentsMargins(2,2,2,2);
+    //titlebar->setContentsMargins(2,2,2,2);
     titlebar->setStyleSheet("color: 'green';");
     titlebar->setMouseTracking(true);
     hLayout->addWidget(titlebar);
