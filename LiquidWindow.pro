@@ -10,10 +10,12 @@ CONFIG += c++11
 
 SOURCES += \
     LiquidWindow.cpp \
+    TitleBar.cpp \
     main.cpp
 
 HEADERS += \
-    LiquidWindow.h
+    LiquidWindow.h \
+    TitleBar.h
 
 FORMS += \
     LiquidWindow.ui

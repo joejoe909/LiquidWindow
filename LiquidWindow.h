@@ -17,6 +17,7 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include <QLabel>
+#include "TitleBar.h"
 
 enum modes{
    NONE = 0,
@@ -66,9 +67,11 @@ protected:
     void moveEvent(QMoveEvent *e);
     void enterEvent(QEnterEvent *e);
     void redrawComponents();
-    QWidget *titlebar;
+    //QWidget *titlebar;
     bool m_infocus;
     bool m_isEditing;
+    QFrame *mainarea;
+
 
 signals:
     void inFocus(bool mode);
@@ -80,6 +83,7 @@ private:
     int numOfScreens;
     QRect useableGeo;
     QScreen *currentScreen;
+    TitleBar *titlebar;
 };
 
 #endif // LIQUIDWINDOW_H
