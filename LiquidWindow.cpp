@@ -27,14 +27,14 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         ui->centralwidget->setMouseTracking(true);
         ui->centralwidget->setStyleSheet("background-color: 'orange';");
         QVBoxLayout *vertLay = new QVBoxLayout(this);
-        vertLay->setSpacing(2);
+        vertLay->setSpacing(0);
         vertLay->setContentsMargins(5,5,5,5);
         ui->centralwidget->setLayout(vertLay);
 
         titlebar = new TitleBar(this);
 
 
-        titlebar->setMaximumHeight(50);
+        titlebar->setMaximumHeight(33);
         titlebar->setMouseTracking(true);
       //  titlebar->setGeometry(contentsRect().x()+5, contentsRect().y()+5, contentsRect().width()-10, 30);
         vertLay->addWidget(titlebar);
