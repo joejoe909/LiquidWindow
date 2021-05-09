@@ -21,11 +21,12 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         setAttribute(Qt::WA_DeleteOnClose);
         this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
         this->setMouseTracking(true);
-        this->setGeometry(200,200,700,500);
+       //this->setGeometry(200,200,700,500);
         ui->centralwidget->setMouseTracking(true);
         ui->centralwidget->setStyleSheet("background-color: 'orange';");
         QVBoxLayout *vertLay = new QVBoxLayout(this);
         vertLay->setSpacing(0);
+        vertLay->setContentsMargins(5,0,5,5);
         ui->centralwidget->setLayout(vertLay);
 
         titlebar = new TitleBar(this);
@@ -33,10 +34,12 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
 
         titlebar->setMaximumHeight(50);
         titlebar->setMouseTracking(true);
-        titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
+        titlebar->setContentsMargins(0,0,0,0);
+  //      titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
+        titlebar->setGeometry(contentsRect().x()+5, contentsRect().y()+5, contentsRect().width()-10, 40);
         vertLay->addWidget(titlebar);
 
-        QFrame *mainarea = new QFrame(this);
+        mainarea = new QFrame(this);
         mainarea->setStyleSheet("background: 'blue'");
         mainarea->setContentsMargins(0,0,0,0);
         vertLay->addWidget(mainarea);
@@ -51,6 +54,7 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         m_isEditing = true;
         this->installEventFilter(parent);
         qDebug () << position;
+           this->setGeometry(200,200,700,500);
 
 
 
@@ -150,11 +154,6 @@ void LiquidWindow::setCursorShape(const QPoint &e_pos)
 
 bool LiquidWindow::eventFiler(QObject *obj, QEvent *evt)
 {
-    //    if(m_infocus){
-    //        //this is a good place to pain if you need to
-
-    //        return QMainWindow::eventFilter(obj,evt);
-    //    }
         qDebug() << "eventFilter";
         return QMainWindow::eventFilter(obj, evt);
 }
@@ -163,8 +162,6 @@ void LiquidWindow::mousePressEvent(QMouseEvent *e)
 {
     qDebug() << "mosuePressEvent()";
      position = QPoint(e->globalPosition().x()-geometry().x(), e->globalPosition().y()-geometry().y());
-     //if (!m_isEditing) return;
-        // if (!m_infocus) return;
          if (e->buttons() == Qt::LeftButton) {
              //if
              qDebug() << "LeftButton event...";
@@ -189,25 +186,18 @@ void LiquidWindow::mouseReleaseEvent(QMouseEvent *e)
 void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
 {
     QRect rectHld = this->geometry();
-//    qDebug() << "mouseMoveEvent() position is: " << position;
-//    qDebug() << "parentWidget() = " << parentWidget();
-//    qDebug() << "X: " << e->globalPosition().x() << " Y: " << e->globalPosition().y();
     QMainWindow::mouseMoveEvent(e);
         if (!m_infocus) return;
-           // qDebug ()<< " mouse move event line 163  m_infocus is:" << m_infocus << "mode is: " << mode;
         if (!e->buttons() && Qt::LeftButton) {
             QPoint p = QPoint(e->x() + geometry().x(), e->y() + geometry().y());
             setCursorShape(p);
-            //qDebug ()<< " mouse move event line 177";
             return;
         }
     qDebug ()<< " mouse move event line 180";
         if ((mode == MOVE || mode == NONE) && e->buttons() == Qt::LeftButton) {
-             qDebug ()<< " mouse move event line 182";
-             currentScreen = QGuiApplication::screenAt(geometry().center());
-             qDebug() << "On screen: " << currentScreen->availableGeometry();
+           currentScreen = QGuiApplication::screenAt(geometry().center());
            QPoint toMove = e->globalPos() - position;
-            move(toMove);
+           move(toMove);
 
         }
        if ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
@@ -243,7 +233,7 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZEB: {     //Bottom
                  qDebug ()<< " 190 case RESIZEB";
                   QRect newGeo(rectHld.x(), rectHld.y(), rectHld.width(), (rectHld.height() + (e->y()-rectHld.height())));
-                  if(newGeo.height() > 70 ) resize(width(), newGeo.height());
+                  if(newGeo.height() > 70 ) resize(width(), newGeo.height()); this->setGeometry(newGeo);
                   titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                   return;
                   break;
@@ -251,13 +241,8 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZEL: {     //Left
                  qDebug ()<< " 190 case RESIZEL";
                  QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), rectHld.height());
-//                 qDebug() << "rectHld = " << rectHld;
-//                 qDebug() << "newGeo = " << newGeo;
                  currentScreen = QGuiApplication::screenAt(geometry().center());
-//                 qDebug() << "On screen: " << currentScreen->availableGeometry();
-//                 qDebug() << "newGeo.x(): " << newGeo.x() << " newGeo.width()" << newGeo.width();
-                 if(newGeo.x() > currentScreen->availableGeometry().x() + 70 &&
-                         newGeo.width() > 70) this->setGeometry(newGeo);
+                 if(newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) this->setGeometry(newGeo);
                  titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
@@ -265,12 +250,10 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZET: {     //Top
                  qDebug ()<< " 190 case RESIZET mode is: " << mode;
                  QRect newGeo(rectHld.x(), e->globalPos().y(), rectHld.width(), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
-                //if(e->globalPosition().y() >= 28 && newGeo.height() > 70) this->setGeometry(newGeo);
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  qDebug() << "On screen: " << currentScreen->availableGeometry();
-                 //if(e->globalPosition().y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > currentScreen->availableGeometry().height() + 70) this->setGeometry(newGeo);
-                  if(newGeo.y() >= 28 && newGeo.height() > 70) this->setGeometry(newGeo);
-                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
+                 if((newGeo.y() >= 28) && (newGeo.height() > 70)) this->setGeometry(newGeo);
+                 titlebar->setGeometry(contentsRect().x()+5, contentsRect().y()+5, contentsRect().width()-10, 40);
                  return;
                  break;
             }
@@ -280,7 +263,6 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
                  QRect newGeo(rectHld.x(), rectHld.y(), e->x(), rectHld.height());
                  qDebug() << "rectHld = " << rectHld;
                  qDebug() << "newGeo = " << newGeo;
-                 //if(newGeo.x() > 70 && newGeo.width() > 70) this->setGeometry(newGeo);
                  if(newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) this->setGeometry(newGeo);
                  titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
@@ -289,7 +271,7 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZEBR: {    //Right-Bottom
                  qDebug ()<< " 190 case RESIZEBR";
                   QRect newGeo(rectHld.x(), rectHld.y(), e->x(),  (rectHld.height() + (e->y()-rectHld.height())));
-                 if(newGeo.width() > 90 && newGeo.height() > 70) resize(e->x(), e->y());
+                 if(newGeo.width() > 90 && newGeo.height() > 70) this->setGeometry(newGeo);
                  titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;

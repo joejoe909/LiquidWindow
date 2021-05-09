@@ -70,6 +70,8 @@ protected:
     //QWidget *titlebar;
     bool m_infocus;
     bool m_isEditing;
+    QFrame *mainarea;
+
 
 signals:
     void inFocus(bool mode);
