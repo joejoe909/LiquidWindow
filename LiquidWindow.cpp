@@ -21,12 +21,14 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         setAttribute(Qt::WA_DeleteOnClose);
         this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
         this->setMouseTracking(true);
+        this->setGeometry(200,200,700,500);
+
        //this->setGeometry(200,200,700,500);
         ui->centralwidget->setMouseTracking(true);
         ui->centralwidget->setStyleSheet("background-color: 'orange';");
         QVBoxLayout *vertLay = new QVBoxLayout(this);
-        vertLay->setSpacing(0);
-        vertLay->setContentsMargins(5,0,5,5);
+        vertLay->setSpacing(2);
+        vertLay->setContentsMargins(5,5,5,5);
         ui->centralwidget->setLayout(vertLay);
 
         titlebar = new TitleBar(this);
@@ -34,14 +36,12 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
 
         titlebar->setMaximumHeight(50);
         titlebar->setMouseTracking(true);
-        titlebar->setContentsMargins(0,0,0,0);
-  //      titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
-        titlebar->setGeometry(contentsRect().x()+5, contentsRect().y()+5, contentsRect().width()-10, 40);
+      //  titlebar->setGeometry(contentsRect().x()+5, contentsRect().y()+5, contentsRect().width()-10, 30);
         vertLay->addWidget(titlebar);
 
         mainarea = new QFrame(this);
         mainarea->setStyleSheet("background: 'blue'");
-        mainarea->setContentsMargins(0,0,0,0);
+       // mainarea->setContentsMargins(0,0,0,0);
         vertLay->addWidget(mainarea);
 
         screens = QGuiApplication::screens();
@@ -54,7 +54,7 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         m_isEditing = true;
         this->installEventFilter(parent);
         qDebug () << position;
-           this->setGeometry(200,200,700,500);
+
 
 
 
@@ -250,10 +250,9 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
             case RESIZET: {     //Top
                  qDebug ()<< " 190 case RESIZET mode is: " << mode;
                  QRect newGeo(rectHld.x(), e->globalPos().y(), rectHld.width(), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
-                 currentScreen = QGuiApplication::screenAt(geometry().center());
-                 qDebug() << "On screen: " << currentScreen->availableGeometry();
                  if((newGeo.y() >= 28) && (newGeo.height() > 70)) this->setGeometry(newGeo);
-                 titlebar->setGeometry(contentsRect().x()+5, contentsRect().y()+5, contentsRect().width()-10, 40);
+
+
                  return;
                  break;
             }
@@ -261,8 +260,6 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
                  qDebug ()<< " 190 case RESIZER";
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  QRect newGeo(rectHld.x(), rectHld.y(), e->x(), rectHld.height());
-                 qDebug() << "rectHld = " << rectHld;
-                 qDebug() << "newGeo = " << newGeo;
                  if(newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) this->setGeometry(newGeo);
                  titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
