@@ -3,7 +3,7 @@
 <img src = "Logo.png" width = 250/>
 <img src = "images/GitHub/Git Hub Description.png">
 
-<h3> Liquid Window is my current effort to make a lightweight class that allows for customization of the Title bar and the window itself. Currently the Title bar is simply a widget, drag functionality exists in the main window area itself. I made this code to help you get going on this same journey. I invite you to clone, fork, and make pull requests. I welcome improvements and constructive critiques on my code. You're free to use this in your project. </h3>
+<h3> Liquid Window is my current effort to make a lightweight class that allows for customization of the Title bar and the window itself. Currently the Title bar is simply a widget, drag functionality exists in the main window area itself. I made this code to help you along on this same journey. I invite you to clone, fork, and make pull requests. I welcome improvements and constructive critiques on my code. You're free to use this in your project. </h3>
 
 
 <br>
