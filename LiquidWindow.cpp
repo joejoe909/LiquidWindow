@@ -204,72 +204,51 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
            qDebug() << "now in if statement at 190";
             switch (mode){
             case RESIZETL: {    //Left-Top
-                 qDebug ()<< " 190 case RESIZETL mode is: " << mode;
                  QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPosition().x())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
-                 currentScreen = QGuiApplication::screenAt(geometry().center());
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
-                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
             case RESIZETR: {    //Right-Top
-                 qDebug ()<< " 190 case RESIZETR mode is: " << mode;
                  QRect newGeo(rectHld.x(), e->globalPos().y(), (rectHld.width() + (e->x()-rectHld.width())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
-                 currentScreen = QGuiApplication::screenAt(geometry().center());
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
-                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
             case RESIZEBL: {    //Left-Bottom
-                 qDebug ()<< " 190 case RESIZEBL";
-                 currentScreen = QGuiApplication::screenAt(geometry().center());
                  QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), (rectHld.height() + (e->y() - rectHld.height() )));
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.height() > 70)) this->setGeometry(newGeo);
-                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
             case RESIZEB: {     //Bottom
-                 qDebug ()<< " 190 case RESIZEB";
                   QRect newGeo(rectHld.x(), rectHld.y(), rectHld.width(), (rectHld.height() + (e->y()-rectHld.height())));
                   if(newGeo.height() > 70 ) resize(width(), newGeo.height()); this->setGeometry(newGeo);
-                  titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                   return;
                   break;
             }
             case RESIZEL: {     //Left
-                 qDebug ()<< " 190 case RESIZEL";
                  QRect newGeo(e->globalPos().x(), rectHld.y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), rectHld.height());
                  currentScreen = QGuiApplication::screenAt(geometry().center());
                  if(newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) this->setGeometry(newGeo);
-                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
             case RESIZET: {     //Top
-                 qDebug ()<< " 190 case RESIZET mode is: " << mode;
                  QRect newGeo(rectHld.x(), e->globalPos().y(), rectHld.width(), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
                  if((newGeo.y() >= 28) && (newGeo.height() > 70)) this->setGeometry(newGeo);
-
-
                  return;
                  break;
             }
             case RESIZER: {     //Right
-                 qDebug ()<< " 190 case RESIZER";
-                 currentScreen = QGuiApplication::screenAt(geometry().center());
                  QRect newGeo(rectHld.x(), rectHld.y(), e->x(), rectHld.height());
                  if(newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) this->setGeometry(newGeo);
-                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
-                break;
+                 break;
             }
             case RESIZEBR: {    //Right-Bottom
-                 qDebug ()<< " 190 case RESIZEBR";
-                  QRect newGeo(rectHld.x(), rectHld.y(), e->x(),  (rectHld.height() + (e->y()-rectHld.height())));
+                 QRect newGeo(rectHld.x(), rectHld.y(), e->x(),  (rectHld.height() + (e->y()-rectHld.height())));
                  if(newGeo.width() > 90 && newGeo.height() > 70) this->setGeometry(newGeo);
-                 titlebar->setGeometry(contentsRect().x()+1, contentsRect().y()+1, this->contentsRect().width()-2, 50);
                  return;
                  break;
             }
