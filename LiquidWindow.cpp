@@ -193,7 +193,6 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
             setCursorShape(p);
             return;
         }
-    qDebug ()<< " mouse move event line 180";
         if ((mode == MOVE || mode == NONE) && e->buttons() == Qt::LeftButton) {
            currentScreen = QGuiApplication::screenAt(geometry().center());
            QPoint toMove = e->globalPos() - position;
@@ -201,7 +200,6 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
 
         }
        if ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
-           qDebug() << "now in if statement at 190";
             switch (mode){
             case RESIZETL: {    //Left-Top
                  QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPosition().x())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
