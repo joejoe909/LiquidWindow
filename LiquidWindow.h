@@ -66,7 +66,13 @@ protected:
     void mouseMoveEvent(QMouseEvent*e);
     void moveEvent(QMoveEvent *e);
     void enterEvent(QEnterEvent *e);
+    void createWindow();
     void redrawComponents();
+    void createTitleBar();
+    void createMainFrame();
+    void checkScreen();
+
+
     //QWidget *titlebar;
     bool m_infocus;
     bool m_isEditing;
@@ -84,6 +90,7 @@ private:
     QRect useableGeo;
     QScreen *currentScreen;
     TitleBar *titlebar;
+    QVBoxLayout *vertLay;
 };
 
 #endif // LIQUIDWINDOW_H

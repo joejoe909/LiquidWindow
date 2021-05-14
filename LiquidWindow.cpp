@@ -15,53 +15,26 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
     QMainWindow(parent),
     ui(new Ui::LiquidWindow)
 {
-    ui->setupUi(this);
-        //this->showMaximized();
-        setWindowFlags(Qt::CustomizeWindowHint);
-        setAttribute(Qt::WA_DeleteOnClose);
-        this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
-        this->setMouseTracking(true);
-        this->setGeometry(200,200,700,500);
-
-       //this->setGeometry(200,200,700,500);
-        ui->centralwidget->setMouseTracking(true);
-        ui->centralwidget->setStyleSheet("background-color: 'orange';");
-        QVBoxLayout *vertLay = new QVBoxLayout(this);
-        vertLay->setSpacing(0);
-        vertLay->setContentsMargins(5,5,5,5);
-        ui->centralwidget->setLayout(vertLay);
-
-        titlebar = new TitleBar(this);
-
-
-        titlebar->setMaximumHeight(33);
-        titlebar->setMouseTracking(true);
-      //  titlebar->setGeometry(contentsRect().x()+5, contentsRect().y()+5, contentsRect().width()-10, 30);
-        vertLay->addWidget(titlebar);
-
-        mainarea = new QFrame(this);
-        mainarea->setStyleSheet("background: 'blue'");
-       // mainarea->setContentsMargins(0,0,0,0);
-        vertLay->addWidget(mainarea);
-
+        Q_UNUSED(p);
+        createWindow();
+        createTitleBar();
+        createMainFrame();
+        //setup screens.
         screens = QGuiApplication::screens();
         numOfScreens = screens.size();
-
         currentScreen = QGuiApplication::screenAt(geometry().center());
         qDebug() << "On screen: " << currentScreen->availableGeometry();
-
         m_infocus = true;
         m_isEditing = true;
-        this->installEventFilter(parent);
+        installEventFilter(parent);
         qDebug () << position;
-
-
-
-
 }
 
 LiquidWindow::~LiquidWindow()
 {
+    delete mainarea;
+    delete vertLay;
+    delete titlebar;
     delete ui;
 }
 
@@ -251,14 +224,13 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
                  break;
             }
             }
-            this->parentWidget()->repaint();
+            //this->parentWidget()->repaint();
        }
 }
 
 void LiquidWindow::moveEvent(QMoveEvent *e)
 {
-    // qDebug () << "mouse moveEvent";
-    // qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
+    qDebug() << "moveEvent";
 }
 
 void LiquidWindow::enterEvent(QEnterEvent *e)
@@ -267,7 +239,46 @@ void LiquidWindow::enterEvent(QEnterEvent *e)
     qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
 }
 
+void LiquidWindow::createWindow()
+{
+    ui->setupUi(this);
+    setWindowFlags(Qt::CustomizeWindowHint);
+    setAttribute(Qt::WA_DeleteOnClose);
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+    this->setMouseTracking(true);
+    this->setGeometry(200,200,700,500);
+    ui->centralwidget->setMouseTracking(true);
+    ui->centralwidget->setStyleSheet("background-color: orange;");
+    vertLay = new QVBoxLayout(this);
+    vertLay->setSpacing(0);
+    vertLay->setContentsMargins(5,5,5,5);
+    ui->centralwidget->setLayout(vertLay);
+}
+
 void LiquidWindow::redrawComponents()
 {
+    mainarea = new QFrame(this);
+    mainarea->setStyleSheet("background: blue;");
+    vertLay->addWidget(mainarea);
+}
 
+void LiquidWindow::createTitleBar()
+{
+    titlebar = new TitleBar(this);
+    titlebar->setMaximumHeight(33);
+    titlebar->setMouseTracking(true);
+    vertLay->addWidget(titlebar);
+}
+
+void LiquidWindow::createMainFrame()
+{
+    mainarea = new QFrame(this);
+    mainarea->setStyleSheet("background: blue;");
+    vertLay->addWidget(mainarea);
+}
+
+void LiquidWindow::checkScreen()
+{
+    currentScreen = QGuiApplication::screenAt(geometry().center());
+    qDebug() << "On screen: " << currentScreen->availableGeometry();
 }
