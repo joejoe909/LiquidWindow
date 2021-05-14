@@ -46,4 +46,5 @@ TitleBar::TitleBar(QWidget *parent): QWidget(parent)
 void TitleBar::addWidget(QWidget *titleBarWidget)
 {
     titleBarLayout->addWidget(titleBarWidget);
+
 }

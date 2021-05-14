@@ -33,10 +33,10 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
 
 LiquidWindow::~LiquidWindow()
 {
-    delete mainarea;
-    delete vertLay;
-    delete titlebar;
-    delete ui;
+//    delete mainarea;
+//    delete vertLay;
+//    delete titlebar;
+      delete ui;
 }
 
 void LiquidWindow::setCursorShape(const QPoint &e_pos)
@@ -270,10 +270,10 @@ void LiquidWindow::createTitleBar()
     titlebar->setMouseTracking(true);
     //titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     vertLay->addWidget(titlebar);
-    QPushButton *closeBtn = new QPushButton(this);
-    closeBtn->setText("X");
-    closeBtn->show();
-    //titlebar->addWidget(closeBtn);
+//    QPushButton *closeBtn = new QPushButton(this);
+//    closeBtn->setText("X");
+//    closeBtn->show();
+//    //titlebar->addWidget(closeBtn);
 
 }
 
