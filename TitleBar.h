@@ -21,8 +21,15 @@ class TitleBar : public QWidget
     Q_OBJECT
 public:
     TitleBar(QWidget *parent = nullptr);
+    void addWidget(QWidget *titleBarWidget);
+
+private:
     QHBoxLayout *hLayout;
+    QHBoxLayout *titleBarLayout;
     QFrame *titlebar;
+
+
+
 };
 
 #endif // TITLEBAR_H

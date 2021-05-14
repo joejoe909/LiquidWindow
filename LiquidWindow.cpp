@@ -9,6 +9,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QVBoxLayout>
+#include <QPushButton>
 
 
 LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
@@ -267,7 +268,13 @@ void LiquidWindow::createTitleBar()
     titlebar = new TitleBar(this);
     titlebar->setMaximumHeight(33);
     titlebar->setMouseTracking(true);
+    //titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     vertLay->addWidget(titlebar);
+    QPushButton *closeBtn = new QPushButton(this);
+    closeBtn->setText("X");
+    closeBtn->show();
+    //titlebar->addWidget(closeBtn);
+
 }
 
 void LiquidWindow::createMainFrame()

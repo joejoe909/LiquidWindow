@@ -3,6 +3,7 @@
 #include <QLabel>
 #include <QSpacerItem>
 #include <QFrame>
+#include <QSizePolicy>
 
 TitleBar::TitleBar(QWidget *parent): QWidget(parent)
 {
@@ -21,12 +22,14 @@ TitleBar::TitleBar(QWidget *parent): QWidget(parent)
     titlebar = new QFrame(this);
     //titlebar->setContentsMargins(2,2,2,2);
     titlebar->setStyleSheet("color: 'green';");
+   // titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     titlebar->setMouseTracking(true);
+    titlebar->setLayout(titleBarLayout);
     hLayout->addWidget(titlebar);
 
 
 
-    //newLbl->setGeometry(parent->width()/2, parent->height()/2, 150,100);
+//  newLbl->setGeometry(parent->width()/2, parent->height()/2, 150,100);
 //    hLayout->addWidget(newLbl);
 
 //    QSpacerItem *hSpacer= new QSpacerItem(100,100, QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -38,4 +41,9 @@ TitleBar::TitleBar(QWidget *parent): QWidget(parent)
 //    anthrLbl->setContentsMargins(5,5,-5,-5);
 //    hLayout->addWidget(anthrLbl);
 
+}
+
+void TitleBar::addWidget(QWidget *titleBarWidget)
+{
+    titleBarLayout->addWidget(titleBarWidget);
 }
