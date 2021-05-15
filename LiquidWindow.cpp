@@ -66,34 +66,28 @@ void LiquidWindow::createTitleBar()
     titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     vertLay->addWidget(titlebar);
 
-    //Yes this works!
-        QLabel *anthrLbl = new QLabel(this);
-        anthrLbl->setText("Liquid Window");
-        anthrLbl->setStyleSheet("color: 'white';");
-        anthrLbl->setContentsMargins(0,0,0,0);
-        anthrLbl->setMouseTracking(true);
-        titlebar->addWidget(anthrLbl);
+    QLabel *anthrLbl = new QLabel(this);
+    anthrLbl->setText("Liquid Window");
+    anthrLbl->setStyleSheet("color: 'white';");
+    anthrLbl->setContentsMargins(0,0,0,0);
+    anthrLbl->setMouseTracking(true);
+    titlebar->addWidget(anthrLbl);
 
-        QPushButton *minimizeBtn = new QPushButton(this);
-        minimizeBtn->setText("-");
-        minimizeBtn->setStyleSheet("color: 'white'; background: 'red'");
-        minimizeBtn->setMaximumWidth(25);
-        minimizeBtn->setMinimumHeight(24);
-        minimizeBtn->show();
-        titlebar->addWidget(minimizeBtn);
+    QPushButton *minimizeBtn = new QPushButton(this);
+    minimizeBtn->setText("-");
+    minimizeBtn->setStyleSheet("color: 'white'; background: 'red'");
+    minimizeBtn->setMaximumWidth(25);
+    minimizeBtn->setMinimumHeight(24);
+    minimizeBtn->show();
+    titlebar->addWidget(minimizeBtn);
 
-        QPushButton *closeBtn = new QPushButton(this);
-        closeBtn->setText("X");
-        closeBtn->setStyleSheet("color: 'white'; background: 'red'");
-        closeBtn->setMaximumWidth(25);
-        closeBtn->setMinimumHeight(24);
-        closeBtn->show();
-        titlebar->addWidget(closeBtn);
-
-
-
-
-
+    QPushButton *closeBtn = new QPushButton(this);
+    closeBtn->setText("X");
+    closeBtn->setStyleSheet("color: 'white'; background: 'red'");
+    closeBtn->setMaximumWidth(25);
+    closeBtn->setMinimumHeight(24);
+    closeBtn->show();
+    titlebar->addWidget(closeBtn);
 
 }
 

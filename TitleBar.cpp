@@ -20,7 +20,7 @@ TitleBar::TitleBar(QWidget *parent): QWidget(parent)
    // titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     titlebar->setMouseTracking(true);
     titleBarLayout = new QHBoxLayout();  //
-    titleBarLayout->setContentsMargins(4,2,-2,0);
+    titleBarLayout->setContentsMargins(4,2,-1,0);
     titlebar->setLayout(titleBarLayout); //
 
     hLayout->addWidget(titlebar);
