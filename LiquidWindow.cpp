@@ -31,12 +31,135 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         qDebug () << position;
 }
 
+
+void LiquidWindow::createWindow()
+{
+    ui->setupUi(this);
+    delete ui->centralwidget->layout();
+    setWindowFlags(Qt::CustomizeWindowHint);
+    //setAttribute(Qt::WA_DeleteOnClose);
+    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+    this->setMouseTracking(true);
+    this->setGeometry(200,200,700,500);
+    ui->centralwidget->setMouseTracking(true);
+    ui->centralwidget->setStyleSheet("background-color: orange;");
+    vertLay = new QVBoxLayout(this);
+    vertLay->setSpacing(0);
+    vertLay->setContentsMargins(5,5,5,5);
+    ui->centralwidget->setLayout(vertLay);
+   // this->showMaximized();
+}
+
+void LiquidWindow::redrawComponents()
+{
+    mainarea = new QFrame(this);
+    mainarea->setStyleSheet("background: blue;");
+    vertLay->addWidget(mainarea);
+}
+
+void LiquidWindow::createTitleBar()
+{
+    titlebar = new TitleBar(this);
+    titlebar->setMaximumHeight(33);
+    titlebar->setStyleSheet("background: green;");
+    titlebar->setMouseTracking(true);
+    titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    vertLay->addWidget(titlebar);
+
+    //Yes this works!
+        QLabel *anthrLbl = new QLabel(this);
+        anthrLbl->setText("Liquid Window");
+        anthrLbl->setStyleSheet("color: 'white';");
+        anthrLbl->setContentsMargins(0,0,0,0);
+        anthrLbl->setMouseTracking(true);
+        titlebar->addWidget(anthrLbl);
+
+        QPushButton *minimizeBtn = new QPushButton(this);
+        minimizeBtn->setText("-");
+        minimizeBtn->setStyleSheet("color: 'white'; background: 'red'");
+        minimizeBtn->setMaximumWidth(25);
+        minimizeBtn->setMinimumHeight(24);
+        minimizeBtn->show();
+        titlebar->addWidget(minimizeBtn);
+
+        QPushButton *closeBtn = new QPushButton(this);
+        closeBtn->setText("X");
+        closeBtn->setStyleSheet("color: 'white'; background: 'red'");
+        closeBtn->setMaximumWidth(25);
+        closeBtn->setMinimumHeight(24);
+        closeBtn->show();
+        titlebar->addWidget(closeBtn);
+
+
+
+
+
+
+}
+
+void LiquidWindow::createMainFrame()
+{
+    mainarea = new QFrame(this);
+    mainarea->setStyleSheet("background: blue;");
+    mainarea->setMouseTracking(true);
+    vertLay->addWidget(mainarea);
+}
+
+void LiquidWindow::checkScreen()
+{
+    currentScreen = QGuiApplication::screenAt(geometry().center());
+    qDebug() << "On screen: " << currentScreen->availableGeometry();
+}
+
 LiquidWindow::~LiquidWindow()
 {
 //    delete mainarea;
 //    delete vertLay;
 //    delete titlebar;
       delete ui;
+}
+
+bool LiquidWindow::eventFiler(QObject *obj, QEvent *evt)
+{
+        qDebug() << "eventFilter";
+        return QMainWindow::eventFilter(obj, evt);
+}
+
+void LiquidWindow::mousePressEvent(QMouseEvent *e)
+{
+    qDebug() << "mosuePressEvent()";
+     position = QPoint(e->globalPos().x()-geometry().x(), e->globalPos().y()-geometry().y());
+         if (e->buttons() == Qt::LeftButton) {
+             //if
+             qDebug() << "LeftButton event...";
+             emit inFocus(true);
+             qDebug() << "focus set to true";
+             setCursorShape(e->globalPos());
+            // return;
+         }else if(e->button() == Qt::RightButton) {
+             qDebug() << "RightButton event...";
+             e->accept();
+         }
+}
+
+void LiquidWindow::mouseReleaseEvent(QMouseEvent *e)
+{
+    QMainWindow::mouseReleaseEvent(e);
+    currentScreen = QGuiApplication::screenAt(geometry().center());
+    qDebug() << "mosueReleaseEvent - On screen: " << currentScreen->availableGeometry();
+    repaint();
+}
+
+
+void LiquidWindow::moveEvent(QMoveEvent *e)
+{
+    qDebug() << "moveEvent";
+}
+
+void LiquidWindow::enterEvent(QEnterEvent *e)
+{
+    qDebug() << "enter event";
+    qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
 }
 
 void LiquidWindow::setCursorShape(const QPoint &e_pos)
@@ -125,37 +248,9 @@ void LiquidWindow::setCursorShape(const QPoint &e_pos)
             }
 
 }
+//end setCursorShape();
 
-bool LiquidWindow::eventFiler(QObject *obj, QEvent *evt)
-{
-        qDebug() << "eventFilter";
-        return QMainWindow::eventFilter(obj, evt);
-}
 
-void LiquidWindow::mousePressEvent(QMouseEvent *e)
-{
-    qDebug() << "mosuePressEvent()";
-     position = QPoint(e->globalPosition().x()-geometry().x(), e->globalPosition().y()-geometry().y());
-         if (e->buttons() == Qt::LeftButton) {
-             //if
-             qDebug() << "LeftButton event...";
-             emit inFocus(true);
-             qDebug() << "focus set to true";
-             setCursorShape(e->globalPos());
-            // return;
-         }else if(e->button() == Qt::RightButton) {
-             qDebug() << "RightButton event...";
-             e->accept();
-         }
-}
-
-void LiquidWindow::mouseReleaseEvent(QMouseEvent *e)
-{
-    QMainWindow::mouseReleaseEvent(e);
-    currentScreen = QGuiApplication::screenAt(geometry().center());
-    qDebug() << "mosueReleaseEvent - On screen: " << currentScreen->availableGeometry();
-    repaint();
-}
 
 void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
 {
@@ -176,13 +271,13 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
        if ((mode != MOVE) && e->buttons() && Qt::LeftButton) {
             switch (mode){
             case RESIZETL: {    //Left-Top
-                 QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPosition().x())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
+                 QRect newGeo(e->globalPos().x(), e->globalPos().y(), (rectHld.width() + (rectHld.x() - e->globalPos().x())), (rectHld.height() + (rectHld.y() - e->globalPos().y())));
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
                  return;
                  break;
             }
             case RESIZETR: {    //Right-Top
-                 QRect newGeo(rectHld.x(), e->globalPos().y(), (rectHld.width() + (e->x()-rectHld.width())), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
+                 QRect newGeo(rectHld.x(), e->globalPos().y(), (rectHld.width() + (e->x()-rectHld.width())), (rectHld.height() + (rectHld.y() - e->globalPos().y())));
                  if((newGeo.x() > currentScreen->availableGeometry().x() + 70 && newGeo.width() > 70) && (newGeo.y() >= currentScreen->availableGeometry().y() + 28 && newGeo.height() > 70)) this->setGeometry(newGeo);
                  return;
                  break;
@@ -207,7 +302,7 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
                  break;
             }
             case RESIZET: {     //Top
-                 QRect newGeo(rectHld.x(), e->globalPos().y(), rectHld.width(), (rectHld.height() + (rectHld.y() - e->globalPosition().y())));
+                 QRect newGeo(rectHld.x(), e->globalPos().y(), rectHld.width(), (rectHld.height() + (rectHld.y() - e->globalPos().y())));
                  if((newGeo.y() >= 28) && (newGeo.height() > 70)) this->setGeometry(newGeo);
                  return;
                  break;
@@ -228,64 +323,5 @@ void LiquidWindow::mouseMoveEvent(QMouseEvent *e)
             //this->parentWidget()->repaint();
        }
 }
+//End mouseMoveEvent
 
-void LiquidWindow::moveEvent(QMoveEvent *e)
-{
-    qDebug() << "moveEvent";
-}
-
-void LiquidWindow::enterEvent(QEnterEvent *e)
-{
-    qDebug() << "enter event";
-    qDebug() << "X: " << e->pos().x() << " Y: " << e->pos().y();
-}
-
-void LiquidWindow::createWindow()
-{
-    ui->setupUi(this);
-    setWindowFlags(Qt::CustomizeWindowHint);
-    setAttribute(Qt::WA_DeleteOnClose);
-    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
-    this->setMouseTracking(true);
-    this->setGeometry(200,200,700,500);
-    ui->centralwidget->setMouseTracking(true);
-    ui->centralwidget->setStyleSheet("background-color: orange;");
-    vertLay = new QVBoxLayout(this);
-    vertLay->setSpacing(0);
-    vertLay->setContentsMargins(5,5,5,5);
-    ui->centralwidget->setLayout(vertLay);
-}
-
-void LiquidWindow::redrawComponents()
-{
-    mainarea = new QFrame(this);
-    mainarea->setStyleSheet("background: blue;");
-    vertLay->addWidget(mainarea);
-}
-
-void LiquidWindow::createTitleBar()
-{
-    titlebar = new TitleBar(this);
-    titlebar->setMaximumHeight(33);
-    titlebar->setMouseTracking(true);
-    //titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    vertLay->addWidget(titlebar);
-//    QPushButton *closeBtn = new QPushButton(this);
-//    closeBtn->setText("X");
-//    closeBtn->show();
-//    //titlebar->addWidget(closeBtn);
-
-}
-
-void LiquidWindow::createMainFrame()
-{
-    mainarea = new QFrame(this);
-    mainarea->setStyleSheet("background: blue;");
-    vertLay->addWidget(mainarea);
-}
-
-void LiquidWindow::checkScreen()
-{
-    currentScreen = QGuiApplication::screenAt(geometry().center());
-    qDebug() << "On screen: " << currentScreen->availableGeometry();
-}

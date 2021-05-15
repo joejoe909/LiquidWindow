@@ -58,7 +58,7 @@ protected:
     int mode;
 
     QPoint position;
-    QVBoxLayout *vLayout;
+    //QVBoxLayout *vLayout;
     void setCursorShape(const QPoint &e_pos);
     bool eventFiler(QObject *obj, QEvent *evt);
     void mousePressEvent(QMouseEvent*e);
