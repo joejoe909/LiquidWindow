@@ -11,7 +11,6 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-
 LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
     QMainWindow(parent),
     ui(new Ui::LiquidWindow)
@@ -79,7 +78,11 @@ void LiquidWindow::createTitleBar()
     minimizeBtn->setMaximumWidth(25);
     minimizeBtn->setMinimumHeight(24);
     minimizeBtn->show();
+    //add connection to a minimize function.
     titlebar->addWidget(minimizeBtn);
+
+    //restore and maximize functionality.
+
 
     QPushButton *closeBtn = new QPushButton(this);
     closeBtn->setText("X");
@@ -87,7 +90,10 @@ void LiquidWindow::createTitleBar()
     closeBtn->setMaximumWidth(25);
     closeBtn->setMinimumHeight(24);
     closeBtn->show();
+     //add connection to a close function.
     titlebar->addWidget(closeBtn);
+
+
 
 }
 
