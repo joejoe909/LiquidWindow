@@ -82,6 +82,12 @@ protected:
 signals:
     void inFocus(bool mode);
     void outFocus(bool mode);
+
+public slots:
+    void minimizeLW();
+    void closeLW();
+
+
 private:
     Ui::LiquidWindow *ui;
     QLabel *MosPos;

@@ -77,8 +77,8 @@ void LiquidWindow::createTitleBar()
     minimizeBtn->setStyleSheet("color: 'white'; background: 'red'");
     minimizeBtn->setMaximumWidth(25);
     minimizeBtn->setMinimumHeight(24);
+    connect(minimizeBtn, &QPushButton::clicked, this, &LiquidWindow::minimizeLW);
     minimizeBtn->show();
-    //add connection to a minimize function.
     titlebar->addWidget(minimizeBtn);
 
     //restore and maximize functionality.
@@ -90,7 +90,7 @@ void LiquidWindow::createTitleBar()
     closeBtn->setMaximumWidth(25);
     closeBtn->setMinimumHeight(24);
     closeBtn->show();
-     //add connection to a close function.
+    connect(closeBtn, &QPushButton::clicked, this, &LiquidWindow::closeLW);
     titlebar->addWidget(closeBtn);
 
 
@@ -109,6 +109,16 @@ void LiquidWindow::checkScreen()
 {
     currentScreen = QGuiApplication::screenAt(geometry().center());
     qDebug() << "On screen: " << currentScreen->availableGeometry();
+}
+
+void LiquidWindow::minimizeLW()
+{
+    this->showMinimized();
+}
+
+void LiquidWindow::closeLW()
+{
+    this->close();
 }
 
 LiquidWindow::~LiquidWindow()
