@@ -101,7 +101,7 @@ void LiquidWindow::createTitleBar()
 
 
     QPushButton *closeBtn = new QPushButton(this);
-    closeBtn->setStyleSheet("*{border-image: url(:/icons/close2.png); background: 'red';} :pressed{ border-image: url(:/icons/close2.png); background: #4f0303;}" );
+    closeBtn->setStyleSheet("*{border-image: url(:/icons/close.png); background: 'red';} :pressed{ border-image: url(:/icons/close.png); background: #4f0303;}" );
     closeBtn->setMaximumWidth(25);
     closeBtn->setMinimumHeight(24);
     closeBtn->show();
