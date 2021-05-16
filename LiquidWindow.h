@@ -99,6 +99,7 @@ private:
     TitleBar *titlebar;
     QVBoxLayout *vertLay;
     QRect resState;
+    QPushButton *mxResBtn;
 };
 
 #endif // LIQUIDWINDOW_H

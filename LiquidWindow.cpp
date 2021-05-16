@@ -67,9 +67,7 @@ void LiquidWindow::createTitleBar()
     vertLay->addWidget(titlebar);
 
     QLabel *lwIcon = new QLabel(this);
-    lwIcon->setStyleSheet("background: black;");
-    lwIcon->setStyleSheet("*{/*border-radius: 0px;*/ border-image: url(:/icons/LW.png) ;}");
-    lwIcon->setProperty("scaledContents", "checked");
+    lwIcon->setStyleSheet("*{ border-image: url(:/icons/LW.png);}");
     lwIcon->setContentsMargins(0,0,0,0);
     lwIcon->setMouseTracking(true);
     lwIcon->setMaximumWidth(25);
@@ -85,8 +83,7 @@ void LiquidWindow::createTitleBar()
     titlebar->addWidget(anthrLbl);
 
     QPushButton *minimizeBtn = new QPushButton(this);
-    minimizeBtn->setText("-");
-    minimizeBtn->setStyleSheet("color: 'white'; background: 'red';");
+    minimizeBtn->setStyleSheet("*{border-image: url(:/icons/minimize.png); background: 'red';} :pressed{ border-image: url(:/icons/minimize.png); background: #4f0303;}" );
     minimizeBtn->setMaximumWidth(25);
     minimizeBtn->setMaximumHeight(24);
     connect(minimizeBtn, &QPushButton::clicked, this, &LiquidWindow::minimizeLW);
@@ -94,9 +91,8 @@ void LiquidWindow::createTitleBar()
     titlebar->addWidget(minimizeBtn);
 
     //restore and maximize functionality.
-    QPushButton *mxResBtn = new QPushButton(this);
-    mxResBtn->setText("M");
-    mxResBtn->setStyleSheet("color: 'white'; background: 'red';");
+    mxResBtn = new QPushButton(this);
+    mxResBtn->setStyleSheet("*{border-image: url(:/icons/maximize.png); background: 'red';} :pressed{ border-image: url(:/icons/maximize.png); background: #4f0303;}" );
     mxResBtn->setMaximumWidth(25);
     mxResBtn->setMinimumHeight(24);
     connect(mxResBtn, &QPushButton::clicked, this, &LiquidWindow::maxRes);
@@ -105,8 +101,7 @@ void LiquidWindow::createTitleBar()
 
 
     QPushButton *closeBtn = new QPushButton(this);
-    closeBtn->setText("X");
-    closeBtn->setStyleSheet("color: 'white'; background: 'red'");
+    closeBtn->setStyleSheet("*{border-image: url(:/icons/close2.png); background: 'red';} :pressed{ border-image: url(:/icons/close2.png); background: #4f0303;}" );
     closeBtn->setMaximumWidth(25);
     closeBtn->setMinimumHeight(24);
     closeBtn->show();
@@ -146,8 +141,10 @@ void LiquidWindow::maxRes()
     if(!(this->isMaximized()))
     {
         this->showMaximized();
+        mxResBtn->setStyleSheet("*{border-image: url(:/icons/restore.png); background: 'red';} :pressed{ border-image: url(:/icons/restore.png); background: #4f0303;}" );
     }else if(isMaximized()){
-       this->showNormal();
+        mxResBtn->setStyleSheet("*{border-image: url(:/icons/maximize.png); background: 'red';} :pressed{ border-image: url(:/icons/maximize.png); background: #4f0303;}" );
+        this->showNormal();
     }
 }
 
