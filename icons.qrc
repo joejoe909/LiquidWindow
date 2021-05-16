@@ -6,5 +6,6 @@
         <file>icons/minimize.png</file>
         <file>icons/restore.png</file>
         <file>icons/Default TItle Bar Icon.png</file>
+        <file>icons/LW.png</file>
     </qresource>
 </RCC>

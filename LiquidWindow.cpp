@@ -66,6 +66,17 @@ void LiquidWindow::createTitleBar()
     titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     vertLay->addWidget(titlebar);
 
+    QLabel *lwIcon = new QLabel(this);
+    lwIcon->setStyleSheet("background: black;");
+    lwIcon->setStyleSheet("*{/*border-radius: 0px;*/ border-image: url(:/icons/LW.png) ;}");
+    lwIcon->setProperty("scaledContents", "checked");
+    lwIcon->setContentsMargins(0,0,0,0);
+    lwIcon->setMouseTracking(true);
+    lwIcon->setMaximumWidth(25);
+    lwIcon->setMaximumHeight(24);
+    lwIcon->show();
+    titlebar->addWidget(lwIcon);
+
     QLabel *anthrLbl = new QLabel(this);
     anthrLbl->setText("Liquid Window");
     anthrLbl->setStyleSheet("color: 'white';");
@@ -75,9 +86,9 @@ void LiquidWindow::createTitleBar()
 
     QPushButton *minimizeBtn = new QPushButton(this);
     minimizeBtn->setText("-");
-    minimizeBtn->setStyleSheet("color: 'white'; background: 'red'");
+    minimizeBtn->setStyleSheet("color: 'white'; background: 'red';");
     minimizeBtn->setMaximumWidth(25);
-    minimizeBtn->setMinimumHeight(24);
+    minimizeBtn->setMaximumHeight(24);
     connect(minimizeBtn, &QPushButton::clicked, this, &LiquidWindow::minimizeLW);
     minimizeBtn->show();
     titlebar->addWidget(minimizeBtn);
@@ -85,7 +96,7 @@ void LiquidWindow::createTitleBar()
     //restore and maximize functionality.
     QPushButton *mxResBtn = new QPushButton(this);
     mxResBtn->setText("M");
-    mxResBtn->setStyleSheet("color: 'white'; background: 'red'");
+    mxResBtn->setStyleSheet("color: 'white'; background: 'red';");
     mxResBtn->setMaximumWidth(25);
     mxResBtn->setMinimumHeight(24);
     connect(mxResBtn, &QPushButton::clicked, this, &LiquidWindow::maxRes);
