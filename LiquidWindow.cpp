@@ -40,6 +40,7 @@ void LiquidWindow::createWindow()
     this->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     this->setMouseTracking(true);
     this->setGeometry(200,200,700,500);
+    resState = this->geometry();
     ui->centralwidget->setMouseTracking(true);
     ui->centralwidget->setStyleSheet("background-color: orange;");
     vertLay = new QVBoxLayout(this);
@@ -82,6 +83,14 @@ void LiquidWindow::createTitleBar()
     titlebar->addWidget(minimizeBtn);
 
     //restore and maximize functionality.
+    QPushButton *mxResBtn = new QPushButton(this);
+    mxResBtn->setText("M");
+    mxResBtn->setStyleSheet("color: 'white'; background: 'red'");
+    mxResBtn->setMaximumWidth(25);
+    mxResBtn->setMinimumHeight(24);
+    connect(mxResBtn, &QPushButton::clicked, this, &LiquidWindow::maxRes);
+    mxResBtn->show();
+    titlebar->addWidget(mxResBtn);
 
 
     QPushButton *closeBtn = new QPushButton(this);
@@ -119,6 +128,16 @@ void LiquidWindow::minimizeLW()
 void LiquidWindow::closeLW()
 {
     this->close();
+}
+
+void LiquidWindow::maxRes()
+{
+    if(!(this->isMaximized()))
+    {
+        this->showMaximized();
+    }else if(isMaximized()){
+       this->showNormal();
+    }
 }
 
 LiquidWindow::~LiquidWindow()

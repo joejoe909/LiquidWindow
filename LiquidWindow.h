@@ -86,6 +86,7 @@ signals:
 public slots:
     void minimizeLW();
     void closeLW();
+    void maxRes();
 
 
 private:
@@ -97,6 +98,7 @@ private:
     QScreen *currentScreen;
     TitleBar *titlebar;
     QVBoxLayout *vertLay;
+    QRect resState;
 };
 
 #endif // LIQUIDWINDOW_H
