@@ -72,8 +72,6 @@ protected:
     void createMainFrame();
     void checkScreen();
 
-
-    //QWidget *titlebar;
     bool m_infocus;
     bool m_isEditing;
     QFrame *mainarea;
