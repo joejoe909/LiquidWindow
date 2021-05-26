@@ -167,13 +167,11 @@ void LiquidWindow::mousePressEvent(QMouseEvent *e)
     qDebug() << "mosuePressEvent()";
      position = QPoint(e->globalPos().x()-geometry().x(), e->globalPos().y()-geometry().y());
          if (e->buttons() == Qt::LeftButton) {
-             //if
              qDebug() << "LeftButton event...";
              emit inFocus(true);
              qDebug() << "focus set to true";
              setCursorShape(e->globalPos());
-            // return;
-         }else if(e->button() == Qt::RightButton) {
+        }else if(e->button() == Qt::RightButton) {
              qDebug() << "RightButton event...";
              e->accept();
          }
