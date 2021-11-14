@@ -28,6 +28,7 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         m_isEditing = true;
         installEventFilter(parent);
         qDebug () << position;
+
 }
 
 
@@ -108,6 +109,8 @@ void LiquidWindow::createTitleBar()
     connect(closeBtn, &QPushButton::clicked, this, &LiquidWindow::closeLW);
     titlebar->addWidget(closeBtn);
 
+    //connect TB dbl click to maximizeLW(); slot.
+    connect(titlebar, &TitleBar::maximize_LW, this, &LiquidWindow::maximizeLW);
 
 
 }
@@ -145,6 +148,16 @@ void LiquidWindow::maxRes()
     }else if(isMaximized()){
         mxResBtn->setStyleSheet("*{border-image: url(:/icons/maximize.png); background: 'red';} :pressed{ border-image: url(:/icons/maximize.png); background: #4f0303;}" );
         this->showNormal();
+    }
+}
+
+void LiquidWindow::maximizeLW()
+{
+    if(this->isMaximized())
+    {
+        this->showNormal();
+    }else{
+        this->showMaximized();
     }
 }
 

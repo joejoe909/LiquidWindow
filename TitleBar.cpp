@@ -38,3 +38,8 @@ void TitleBar::addWidget(QWidget *titleBarWidget)
     titleBarLayout->addWidget(titleBarWidget);
 
 }
+
+void TitleBar::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    emit maximize_LW();
+}

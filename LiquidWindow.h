@@ -85,6 +85,7 @@ public slots:
     void minimizeLW();
     void closeLW();
     void maxRes();
+    void maximizeLW();
 
 
 private:

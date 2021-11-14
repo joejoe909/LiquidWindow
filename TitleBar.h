@@ -28,8 +28,12 @@ private:
     QHBoxLayout *titleBarLayout;
     QFrame *titlebar;
 
+    // QWidget interface
+signals:
+    void maximize_LW();
 
-
+protected:
+    void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
 #endif // TITLEBAR_H
