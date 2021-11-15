@@ -72,6 +72,7 @@ protected:
     void createMainFrame();
     void checkScreen();
     void createMenu();
+    void createActions();
 
     bool m_infocus;
     bool m_isEditing;
@@ -88,6 +89,11 @@ public slots:
     void maxRes();
     void maximizeLW();
 
+private slots:
+    void newFile();
+    void openFile();
+    void saveFile();
+
 
 private:
     Ui::LiquidWindow *ui;
@@ -101,7 +107,14 @@ private:
     QRect resState;
     QPushButton *mxResBtn;
     QFrame *mainarea;
+
+    //Menu stuff.
     QMenuBar *menu;
+    QMenu *fileMenu;
+    QAction *newAct;
+    QAction *openAct;
+    QAction *saveAct;
+
 };
 
 #endif // LIQUIDWINDOW_H

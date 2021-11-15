@@ -18,6 +18,7 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         Q_UNUSED(p);
         createWindow();
         createTitleBar();
+        createActions();
         createMenu();
         createMainFrame();
         //setup screens.
@@ -134,8 +135,29 @@ void LiquidWindow::createMenu()
 {
     menu = new QMenuBar(this);
     menu->setStyleSheet("background: green;");
-    menu->setMaximumHeight(20);
+    menu->setMaximumHeight(22);
+    menu->setLayoutDirection(Qt::LeftToRight);
     vertLay->addWidget(menu);
+
+    fileMenu = new QMenu(this);
+    fileMenu->setTitle("&File");
+    fileMenu->addAction(newAct);
+//    fileMenu->addAction(openAct);
+
+    menu->addMenu(fileMenu);
+}
+
+void LiquidWindow::createActions()
+{
+    newAct = new QAction(tr("&new"), this);
+    newAct->setShortcuts(QKeySequence::New);
+    connect(newAct, &QAction::triggered, this, &LiquidWindow::newFile);
+
+    openAct = new QAction(tr("&Open"), this);
+    newAct->setShortcuts(QKeySequence::Open);
+    connect(openAct, &QAction::triggered, this, &LiquidWindow::openFile);
+
+
 }
 
 void LiquidWindow::minimizeLW()
@@ -168,6 +190,22 @@ void LiquidWindow::maximizeLW()
     }else{
         this->showMaximized();
     }
+}
+
+void LiquidWindow::newFile()
+{
+    qDebug() << "newFile() triggered.";
+}
+
+void LiquidWindow::openFile()
+{
+
+    qDebug() << "openFile() triggered.";
+}
+
+void LiquidWindow::saveFile()
+{
+    qDebug() << "saveFile() triggered.";
 }
 
 LiquidWindow::~LiquidWindow()
