@@ -18,6 +18,7 @@ LiquidWindow::LiquidWindow(QWidget *parent, QPoint *p) :
         Q_UNUSED(p);
         createWindow();
         createTitleBar();
+        createMenu();
         createMainFrame();
         //setup screens.
         screens = QGuiApplication::screens();
@@ -62,7 +63,7 @@ void LiquidWindow::createTitleBar()
 {
     titlebar = new TitleBar(this);
     titlebar->setMaximumHeight(33);
-    titlebar->setStyleSheet("background: green;");
+    titlebar->setStyleSheet("background: red;");
     titlebar->setMouseTracking(true);
     titlebar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     vertLay->addWidget(titlebar);
@@ -84,7 +85,7 @@ void LiquidWindow::createTitleBar()
     titlebar->addWidget(anthrLbl);
 
     QPushButton *minimizeBtn = new QPushButton(this);
-    minimizeBtn->setStyleSheet("*{border-image: url(:/icons/minimize.png); background: 'red';} :pressed{ border-image: url(:/icons/minimize.png); background: #4f0303;}" );
+    minimizeBtn->setStyleSheet("*{border-image: url(:/icons/minimize.png); background: 'green';} :pressed{ border-image: url(:/icons/minimize.png); background: #4f0303;}" );
     minimizeBtn->setMaximumWidth(25);
     minimizeBtn->setMaximumHeight(24);
     connect(minimizeBtn, &QPushButton::clicked, this, &LiquidWindow::minimizeLW);
@@ -93,7 +94,7 @@ void LiquidWindow::createTitleBar()
 
     //restore and maximize functionality.
     mxResBtn = new QPushButton(this);
-    mxResBtn->setStyleSheet("*{border-image: url(:/icons/maximize.png); background: 'red';} :pressed{ border-image: url(:/icons/maximize.png); background: #4f0303;}" );
+    mxResBtn->setStyleSheet("*{border-image: url(:/icons/maximize.png); background: 'green';} :pressed{ border-image: url(:/icons/maximize.png); background: #4f0303;}" );
     mxResBtn->setMaximumWidth(25);
     mxResBtn->setMinimumHeight(24);
     connect(mxResBtn, &QPushButton::clicked, this, &LiquidWindow::maxRes);
@@ -102,7 +103,7 @@ void LiquidWindow::createTitleBar()
 
 
     QPushButton *closeBtn = new QPushButton(this);
-    closeBtn->setStyleSheet("*{border-image: url(:/icons/close.png); background: 'red';} :pressed{ border-image: url(:/icons/close.png); background: #4f0303;}" );
+    closeBtn->setStyleSheet("*{border-image: url(:/icons/close.png); background: 'green';} :pressed{ border-image: url(:/icons/close.png); background: #4f0303;}" );
     closeBtn->setMaximumWidth(25);
     closeBtn->setMinimumHeight(24);
     closeBtn->show();
@@ -127,6 +128,14 @@ void LiquidWindow::checkScreen()
 {
     currentScreen = QGuiApplication::screenAt(geometry().center());
     qDebug() << "On screen: " << currentScreen->availableGeometry();
+}
+
+void LiquidWindow::createMenu()
+{
+    menu = new QMenuBar(this);
+    menu->setStyleSheet("background: green;");
+    menu->setMaximumHeight(20);
+    vertLay->addWidget(menu);
 }
 
 void LiquidWindow::minimizeLW()

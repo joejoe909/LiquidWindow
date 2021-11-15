@@ -71,10 +71,11 @@ protected:
     void createTitleBar();
     void createMainFrame();
     void checkScreen();
+    void createMenu();
 
     bool m_infocus;
     bool m_isEditing;
-    QFrame *mainarea;
+
 
 
 signals:
@@ -99,6 +100,8 @@ private:
     QVBoxLayout *vertLay;
     QRect resState;
     QPushButton *mxResBtn;
+    QFrame *mainarea;
+    QMenuBar *menu;
 };
 
 #endif // LIQUIDWINDOW_H
