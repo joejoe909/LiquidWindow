@@ -134,15 +134,16 @@ void LiquidWindow::checkScreen()
 void LiquidWindow::createMenu()
 {
     menu = new QMenuBar(this);
-    menu->setStyleSheet("background: green;");
+    menu->setStyleSheet("background-color: green; color: white;");
     menu->setMaximumHeight(22);
     menu->setLayoutDirection(Qt::LeftToRight);
     vertLay->addWidget(menu);
 
     fileMenu = new QMenu(this);
     fileMenu->setTitle("&File");
+    fileMenu->setStyleSheet("background-color: green; color: white;");
     fileMenu->addAction(newAct);
-//    fileMenu->addAction(openAct);
+    fileMenu->addAction(openAct);
 
     menu->addMenu(fileMenu);
 }
