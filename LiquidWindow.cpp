@@ -1,12 +1,13 @@
 #include "LiquidWindow.h"
 #include "ui_LiquidWindow.h"
-#include "ui_mainwindow.h"
+//#include "ui_mainwindow.h"
 #include <QLabel>
 #include <QWidget>
 #include <QDebug>
 #include <QString>
 #include <QScreen>
 #include <QMenu>
+#include <QMenuBar>
 #include <QAction>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -176,9 +177,9 @@ void LiquidWindow::maxRes()
     if(!(this->isMaximized()))
     {
         this->showMaximized();
-        mxResBtn->setStyleSheet("*{border-image: url(:/icons/restore.png); background: 'red';} :pressed{ border-image: url(:/icons/restore.png); background: #4f0303;}" );
+        mxResBtn->setStyleSheet("*{border-image: url(:/icons/restore.png); background: 'green';} :pressed{ border-image: url(:/icons/restore.png); background: #4f0303;}" );
     }else if(isMaximized()){
-        mxResBtn->setStyleSheet("*{border-image: url(:/icons/maximize.png); background: 'red';} :pressed{ border-image: url(:/icons/maximize.png); background: #4f0303;}" );
+        mxResBtn->setStyleSheet("*{border-image: url(:/icons/maximize.png); background: 'green';} :pressed{ border-image: url(:/icons/maximize.png); background: #4f0303;}" );
         this->showNormal();
     }
 }

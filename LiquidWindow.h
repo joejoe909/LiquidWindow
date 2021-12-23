@@ -40,6 +40,7 @@ QT_BEGIN_NAMESPACE
 class QAction;
 class QActionGroup;
 class QMenu;
+class QMenuBar;
 QT_END_NAMESPACE
 
 namespace Ui {
